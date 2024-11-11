@@ -16,11 +16,12 @@ function Menu(props: MenuProps) {
 
   return (
     <nav className={classes}>
-      <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/">Home</NavLink>
+      <NavLink className="[&.active]:text-purple [&.active]:underline" to="/">Home</NavLink>
       <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/about">About</NavLink>
       <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/contact">Contact</NavLink>
-      {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/profile">Profile</NavLink>}
-      {!user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/login">Log In</NavLink>}
+      {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/login">Log In</NavLink>}
+      {!user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/profile">Profile</NavLink>}
+      
     </nav>
   )
 }

@@ -4,7 +4,7 @@ import user from "../config/user";
 function PublicRoute() {
 
 
-  if (!user) return <Outlet /> 
+  if (user) return <Outlet /> 
 
   return <Navigate to="/"/>
 
