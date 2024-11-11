@@ -6,8 +6,10 @@ import ProfilePage from "../pages/ProfilePage";
 import ProfileBooksPage from "../pages/ProfileBooksPage";
 import ProfileAccountPage from "../pages/ProfileAccountPage";
 import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+
 
 export default function AppRoutes() {
   return (
@@ -20,6 +22,9 @@ export default function AppRoutes() {
       //* Rutas públicas
       <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginPage />}/>
+      </Route>
+      <Route element={<PublicRoute />}>
+        <Route path="/register" element={<RegisterPage />}/>
       </Route>
       //*================
 

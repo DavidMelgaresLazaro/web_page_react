@@ -20,6 +20,7 @@ function Menu(props: MenuProps) {
       <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/about">About</NavLink>
       <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/contact">Contact</NavLink>
       {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/login">Log In</NavLink>}
+      {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/register">Register</NavLink>}
       {!user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/profile">Profile</NavLink>}
       
     </nav>
