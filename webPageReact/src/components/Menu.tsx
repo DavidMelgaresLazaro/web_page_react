@@ -16,12 +16,12 @@ function Menu(props: MenuProps) {
 
   return (
     <nav className={classes}>
-      <NavLink className="[&.active]:text-purple [&.active]:underline" to="/">Home</NavLink>
-      <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/about">About</NavLink>
-      <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/contact">Contact</NavLink>
-      {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/login">Log In</NavLink>}
-      {user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/register">Register</NavLink>}
-      {!user && <NavLink className="[&.active]:text-yellow-400 [&.active]:underline" to="/profile">Profile</NavLink>}
+      <NavLink className="[&.active]:bg-indigo-600  [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/">Home</NavLink>
+      <NavLink className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/about">Sobre nostros</NavLink>
+      <NavLink className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/contact">Top 5</NavLink>
+      {user && <NavLink className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/login">Iniciar Sesión</NavLink>}
+      {user && <NavLink className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/register">Registro</NavLink>}
+      {!user && <NavLink className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1" to="/profile">Profile</NavLink>}
       
     </nav>
   )

@@ -83,7 +83,7 @@ export default function LoginForm() {
 
       <button
         disabled={!isValidForm}
-        className="disabled:opacity-50 disabled:cursor-not-allowed bg-blue-400 px-4 py-2"
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-indigo-600 px-4 py-2"
       >
         Iniciar Sesión
       </button>

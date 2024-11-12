@@ -60,7 +60,7 @@ export default function LoginPage() {
 
       <button
         disabled={!isValid}
-        className="disabled:opacity-50 disabled:cursor-not-allowed bg-blue-400 px-4 py-2"
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-indigo-600 text-white px-4 py-2"
       >
         Iniciar Sesión
       </button>

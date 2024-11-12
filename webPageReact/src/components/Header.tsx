@@ -11,7 +11,7 @@ function Header () {
   const [isOpenSidebar, toggleSidebar] = useToggle(false);
 
   return (
-    <header className="bg-indigo-600 text-white py-1">
+    <header className="bg-white text-black py-1">
       <div className="container px-2 sm:px-0 mx-auto flex items-center justify-between">
         
         {/* Logo se alinea a la izquierda */}

@@ -4,6 +4,8 @@ type RegisterFormValues = {
   name: string;
   email: string;
   password: string;
+  country: string;
+  platform: string;
 };
 
 export default function RegisterPage() {
@@ -21,6 +23,7 @@ export default function RegisterPage() {
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <h2>Registro</h2>
 
+      {/* Campo Nombre */}
       <div className="relative mb-8">
         <input
           {...register("name", {
@@ -39,12 +42,13 @@ export default function RegisterPage() {
         )}
       </div>
 
+      {/* Campo Email */}
       <div className="relative mb-8">
         <input
           {...register("email", {
             required: "Email requerido",
             pattern: {
-              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              value: /^[a-zA-Z0-9._%+-]+@[a-zAZ0-9.-]+\.[a-zA-Z]{2,}$/,
               message: "Email no válido",
             },
           })}
@@ -59,6 +63,7 @@ export default function RegisterPage() {
         )}
       </div>
 
+      {/* Campo Contraseña */}
       <div className="relative mb-8">
         <input
           {...register("password", {
@@ -77,9 +82,48 @@ export default function RegisterPage() {
         )}
       </div>
 
+      {/* Campo País */}
+      <div className="relative mb-8">
+        <input
+          {...register("country", {
+            required: "País requerido",
+            minLength: { value: 2, message: "Mínimo 2 caracteres" },
+          })}
+          className="input"
+          type="text"
+          placeholder="País..."
+        />
+        {errors.country && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.country.message}
+          </span>
+        )}
+      </div>
+
+      {/* Campo Plataforma */}
+      <div className="relative mb-8">
+        <select
+          {...register("platform", {
+            required: "Selecciona una plataforma",
+          })}
+          className="input"
+        >
+          <option value="">Selecciona una plataforma...</option>
+          <option value="Xbox">Xbox Series X</option>
+          <option value="PS5">PS5</option>
+          <option value="PC">PC</option>
+          <option value="Nintendo Switch">Nintendo Switch</option>
+        </select>
+        {errors.platform && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.platform.message}
+          </span>
+        )}
+      </div>
+
       <button
         disabled={!isValid}
-        className="disabled:opacity-50 disabled:cursor-not-allowed bg-green-400 px-4 py-2"
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-indigo-600 text-white rounded-lg px-1 py-2"
       >
         Registrar
       </button>
