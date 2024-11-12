@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import ContactPage from "../pages/ContactPage";
+import CestaPage from "../pages/CestaPage";
 import ProfilePage from "../pages/ProfilePage";
 import ProfileBooksPage from "../pages/ProfileBooksPage";
 import ProfileAccountPage from "../pages/ProfileAccountPage";
@@ -11,6 +12,7 @@ import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
 
+
 export default function AppRoutes() {
   return (
     <Routes>
@@ -18,6 +20,7 @@ export default function AppRoutes() {
       <Route path="/" element={<HomePage />}/>
       <Route path="/about" element={<AboutPage />}/>
       <Route path="/contact" element={<ContactPage />}/>
+      <Route path="/cesta" element={<CestaPage />}/>
 
       //* Rutas públicas
       <Route element={<PublicRoute />}>

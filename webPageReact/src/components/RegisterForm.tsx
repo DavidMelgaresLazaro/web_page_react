@@ -70,7 +70,7 @@ export default function RegisterForm() {
   }
 
   return (
-    <form>
+    <form className="text-center">
       <h2>Registro</h2>
 
       {/* Campo Nombre */}

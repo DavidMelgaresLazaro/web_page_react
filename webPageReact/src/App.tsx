@@ -18,7 +18,7 @@ function App() {
       <Header />
 
 
-      <main className="grow prose container mx-auto py-8">
+      <main className="grow prose container mx-20 py-8">
 
         {/* {
           window.location.pathname === '/' &&  <HomePage />
