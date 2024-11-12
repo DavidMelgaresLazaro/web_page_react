@@ -1,42 +1,114 @@
 import { useState } from "react";
 
-export default function ControlledForm() {
-  console.log('Formulario controlado');
-  
+export default function RegisterForm() {
+  const [formValues, setFormValues] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  //* Paso 1: Crear un estado por cada input
-  const [inputNameValue, setInputNameValue] = useState('');
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-  function handleSubmit (event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(inputNameValue);
-    
+  const [touchedForm, setTouchedForm] = useState({
+    name: false,
+    email: false,
+    password: false,
+  });
+
+  const isValidForm =
+    formValues.name &&
+    formValues.email &&
+    formValues.password &&
+    !errors.name &&
+    !errors.email &&
+    !errors.password;
+
+  function validateForm(event) {
+    const { name, value } = event.target;
+    let error = "";
+
+    if (name === "name") {
+      if (value.length < 3) error = "Mínimo 3 caracteres";
+      else if (value.length > 10) error = "Máximo 10 caracteres";
+    } else if (name === "email") {
+      const emailRegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegExp.test(value)) error = "Email inválido";
+    } else if (name === "password" && value.length < 6) {
+      error = "Mínimo 6 caracteres";
+    }
+
+    setErrors({ ...errors, [name]: error });
   }
 
-  function handleNameChange (event: React.ChangeEvent<HTMLInputElement>) {
-    // console.log(event.target.value);
+  function handleFormChange(event) {
+    const { name, value } = event.target;
 
-    //* Paso 3: Cambia el estado por cada tecla apretada
-    setInputNameValue(event.target.value);
-    
+    setFormValues({
+      ...formValues,
+      [name]: value,
+    });
+
+    validateForm(event);
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input  
-        type="text" 
-        placeholder="Nombre..."
-        //* Paso 2: Escucha el evento onChange
-        onChange={handleNameChange}
+    <form>
+      <h2>Registro</h2>
 
-        //* Paso opcional: Si queremos que el estado también obligue al input a mostrar el valor lo ponemos en su value=""
-        value={inputNameValue}
-      />
-      <button>Enviar</button>
+      <div className="relative mb-8">
+        <input
+          className="input"
+          name="name"
+          type="text"
+          placeholder="Nombre..."
+          onChange={handleFormChange}
+          onBlur={() => setTouchedForm({ ...touchedForm, name: true })}
+        />
+        {errors.name && touchedForm.name && (
+          <span className="absolute text-red-300 text-sm">{errors.name}</span>
+        )}
+      </div>
 
-      <button type="button" onClick={() => setInputNameValue('Luis')}>Cambiar estado</button>
+      <div className="relative mb-8">
+        <input
+          className="input"
+          name="email"
+          type="email"
+          placeholder="Email..."
+          onChange={handleFormChange}
+          onBlur={() => setTouchedForm({ ...touchedForm, email: true })}
+        />
+        {errors.email && touchedForm.email && (
+          <span className="absolute text-red-300 text-sm">{errors.email}</span>
+        )}
+      </div>
 
-      <h2>{inputNameValue}</h2>
+      <div className="relative mb-8">
+        <input
+          className="input"
+          name="password"
+          type="password"
+          placeholder="Contraseña..."
+          onChange={handleFormChange}
+          onBlur={() => setTouchedForm({ ...touchedForm, password: true })}
+        />
+        {errors.password && touchedForm.password && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.password}
+          </span>
+        )}
+      </div>
+
+      <button
+        disabled={!isValidForm}
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-green-400 px-4 py-2"
+      >
+        Registrar
+      </button>
     </form>
-  )
+  );
 }

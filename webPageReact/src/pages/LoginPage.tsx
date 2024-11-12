@@ -1,59 +1,69 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-export default function AdvancedControlledForm() {
-  //* Paso 1: Crear un estado para todos los  inputs
-  const [formValues, setFormValues] = useState({
-    email: '',
-    password: '',
-    
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+export default function LoginPage() {
+  const { register, handleSubmit, formState } = useForm<LoginFormValues>({
+    mode: "onChange",
   });
 
-  // Función para manejar el envío del formulario
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(formValues);
+  const { errors, isValid } = formState;
+
+  function onSubmit(data: LoginFormValues) {
+    console.log("Inicio de sesión exitoso:", data);
   }
-
-  // Función genérica para manejar los cambios en los inputs
-  function handleFormChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, type, value } = event.target;
-
-    // Actualizamos el estado según el tipo del campo (checkbox o no)
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  }
-
-  
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>LOGIN</h1>
-      <p>Correo:</p>
-      <input
-        type="text"
-        placeholder="Email..."
-        name="email"
-        value={formValues.email}  // Enlazar el valor del input con el estado
-        onChange={handleFormChange}
-      />
-      <p>Contraseña:</p>
-      <input
-        type="password"
-        placeholder="Contraseña..."
-        name="password"
-        value={formValues.password} // Enlazar el valor del input con el estado
-        onChange={handleFormChange}
-      />
+    <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <h2>Iniciar Sesión</h2>
 
-      <br />
+      <div className="relative mb-8">
+        <input
+          {...register("email", {
+            required: "Email requerido",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Email no válido",
+            },
+          })}
+          className="input"
+          type="email"
+          placeholder="Email..."
+        />
+        {errors.email && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.email.message}
+          </span>
+        )}
+      </div>
 
-      <br />
+      <div className="relative mb-8">
+        <input
+          {...register("password", {
+            required: "Contraseña requerida",
+            minLength: { value: 6, message: "Mínimo 6 caracteres" },
+            maxLength: { value: 16, message: "Máximo 16 caracteres" },
+          })}
+          className="input"
+          type="password"
+          placeholder="Contraseña..."
+        />
+        {errors.password && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.password.message}
+          </span>
+        )}
+      </div>
 
-      <button type="submit">Enviar</button>
-  
-      
+      <button
+        disabled={!isValid}
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-blue-400 px-4 py-2"
+      >
+        Iniciar Sesión
+      </button>
     </form>
   );
 }

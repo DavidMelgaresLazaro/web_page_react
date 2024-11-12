@@ -1,89 +1,88 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-export default function AdvancedControlledForm() {
-  //* Paso 1: Crear un estado para todos los  inputs
-  const [formValues, setFormValues] = useState({
-    email: '',
-    user: '',
-    password: '',
-    plataform: '',
-    country: '',
+type RegisterFormValues = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export default function RegisterPage() {
+  const { register, handleSubmit, formState } = useForm<RegisterFormValues>({
+    mode: "onChange",
   });
 
-  // Función para manejar el envío del formulario
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log(formValues);
+  const { errors, isValid } = formState;
+
+  function onSubmit(data: RegisterFormValues) {
+    console.log("Registro exitoso:", data);
   }
-
-  // Función genérica para manejar los cambios en los inputs
-  function handleFormChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-    const { name, type, value, checked } = event.target;
-
-    // Actualizamos el estado según el tipo del campo (checkbox o no)
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value
-    });
-  }
-
-
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="User..."
-        name="user"
-        value={formValues.user}  
-        onChange={handleFormChange}
-      />
-      <input
-        type="text"
-        placeholder="Email..."
-        name="email"
-        value={formValues.email}  
-        onChange={handleFormChange}
-      />
-      <br />
+    <form noValidate onSubmit={handleSubmit(onSubmit)}>
+      <h2>Registro</h2>
 
-      <input
-        type="password"
-        placeholder="Contraseña..."
-        name="password"
-        value={formValues.password} // Enlazar el valor del input con el estado
-        onChange={handleFormChange}
-      />
+      <div className="relative mb-8">
+        <input
+          {...register("name", {
+            required: "Nombre requerido",
+            minLength: { value: 3, message: "Mínimo 3 caracteres" },
+            maxLength: { value: 10, message: "Máximo 10 caracteres" },
+          })}
+          className="input"
+          type="text"
+          placeholder="Nombre..."
+        />
+        {errors.name && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.name.message}
+          </span>
+        )}
+      </div>
 
+      <div className="relative mb-8">
+        <input
+          {...register("email", {
+            required: "Email requerido",
+            pattern: {
+              value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+              message: "Email no válido",
+            },
+          })}
+          className="input"
+          type="email"
+          placeholder="Email..."
+        />
+        {errors.email && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.email.message}
+          </span>
+        )}
+      </div>
 
-      <br />
+      <div className="relative mb-8">
+        <input
+          {...register("password", {
+            required: "Contraseña requerida",
+            minLength: { value: 6, message: "Mínimo 6 caracteres" },
+            maxLength: { value: 16, message: "Máximo 16 caracteres" },
+          })}
+          className="input"
+          type="password"
+          placeholder="Contraseña..."
+        />
+        {errors.password && (
+          <span className="absolute text-red-300 text-sm">
+            {errors.password.message}
+          </span>
+        )}
+      </div>
 
-      <select
-        name="plataform"
-        value={formValues.plataform} // Enlazar el valor del select con el estado
-        onChange={handleFormChange}
+      <button
+        disabled={!isValid}
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-green-400 px-4 py-2"
       >
-        <option value="">Selecciona una plataforma...</option>
-        <option value="PS5">PS5</option>
-        <option value="XBOX">XBOX</option>
-        <option value="PC">PC</option>
-      </select>
-
-      <br />
-
-      <input
-        type="text"
-        placeholder="Country..."
-        name="country"
-        value={formValues.password} // Enlazar el valor del input con el estado
-        onChange={handleFormChange}
-      />
-
-      <button type="submit">Enviar</button>
-
-      <pre>
-        <h2>{JSON.stringify(formValues, null, 2)}</h2>
-      </pre>
+        Registrar
+      </button>
     </form>
   );
 }
