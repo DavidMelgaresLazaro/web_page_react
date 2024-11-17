@@ -20,10 +20,11 @@ export default function RegisterPage() {
   }
 
   return (
+    <div className="flex justify-center items-center  bg-gray-100">
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
       <h2>Registro</h2>
 
-      {/* Campo Nombre */}
+      
       <div className="relative mb-8">
         <input
           {...register("name", {
@@ -128,5 +129,6 @@ export default function RegisterPage() {
         Registrar
       </button>
     </form>
+    </div>
   );
 }

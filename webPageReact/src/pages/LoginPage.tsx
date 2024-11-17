@@ -17,8 +17,9 @@ export default function LoginPage() {
   }
 
   return (
+    <div className="flex justify-center items-center  bg-gray-100">
     <form noValidate onSubmit={handleSubmit(onSubmit)}>
-      <h2>Iniciar Sesión</h2>
+      <h2 className="text-2xl">Iniciar Sesión</h2>
 
       <div className="relative mb-8">
         <input
@@ -65,5 +66,6 @@ export default function LoginPage() {
         Iniciar Sesión
       </button>
     </form>
+    </div>
   );
 }

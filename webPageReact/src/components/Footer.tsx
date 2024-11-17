@@ -11,7 +11,7 @@ function Footer() {
         <a href="https://facebook.com" target="_blank"><FaFacebookF /></a>
         <a href="https://instagram.com" target="_blank"><FaInstagram /></a>
         <a href="https://twitter.com" target="_blank"><FaTwitter /></a>
-        <Logo size="15"/>
+        <Logo />
       </nav>
 
       

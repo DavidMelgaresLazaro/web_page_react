@@ -1,25 +1,16 @@
-import BO6_image from "../images/BO6_image.jpg";
-import farming_25_image from "../images/farming_25_image.jpg"
+import DivBuyNow from "../components/DivBuyNow";
+import JuegosNuevos from "../components/JuegosNuevos";
+
+
 
 
 function HomePage() {
   return (
-    <>
-      <div>
-
-      </div>
-      <div>
-        <h1 className="mx-auto">Juegos Nuevos</h1>
-        <div className="flex space-x-4 justify-start">
-          <img src={BO6_image} alt="BO6" />
-          <img src={farming_25_image} alt="farming_25_image" />
-          <img src={BO6_image} alt="BO6" />
-
-        </div>
-
-      </div>
-    </>
-  )
+    <div className="space-y-10">
+      <DivBuyNow />
+      <JuegosNuevos />
+    </div>
+  );
 }
 
-export default HomePage
+export default HomePage;
