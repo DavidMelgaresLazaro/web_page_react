@@ -1,5 +1,6 @@
 import logo from '../images/logo.png'; 
 
+//Logo of the app
 function Logo() {
   return (
     <div>

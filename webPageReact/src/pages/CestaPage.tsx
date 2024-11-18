@@ -1,3 +1,5 @@
+// CestaPage component that displays a shopping cart page.
+
 function CestaPage(){
     return(
         <>

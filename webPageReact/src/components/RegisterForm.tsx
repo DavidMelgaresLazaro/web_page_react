@@ -1,5 +1,13 @@
 import { useState } from "react";
 
+
+// This is a registration form component that handles user input, validation, and submission for a registration process.
+// Features include:
+// - Real-time validation for name, email, password, country, and platform fields.
+// - Error messages displayed when fields are invalid and have been touched.
+// - A dynamic "Register" button that is disabled unless the form is valid.
+
+
 export default function RegisterForm() {
   const [formValues, setFormValues] = useState({
     name: "",
@@ -73,7 +81,7 @@ export default function RegisterForm() {
     <form className="text-center">
       <h2>Registro</h2>
 
-      {/* Campo Nombre */}
+      
       <div className="relative mb-8">
         <input
           className="input"
@@ -88,7 +96,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Campo Email */}
+      
       <div className="relative mb-8">
         <input
           className="input"
@@ -103,7 +111,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Campo Contraseña */}
+      
       <div className="relative mb-8">
         <input
           className="input"
@@ -120,7 +128,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Campo País */}
+      
       <div className="relative mb-8">
         <input
           className="input"
@@ -135,7 +143,7 @@ export default function RegisterForm() {
         )}
       </div>
 
-      {/* Campo Plataforma */}
+      
       <div className="relative mb-8">
         <select
           className="input"

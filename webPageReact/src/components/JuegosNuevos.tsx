@@ -1,6 +1,10 @@
 import BO6_image from '../images/BO6_image.jpg';
 import farming_25_image from '../images/farming_25_image.jpg';
 
+
+
+// A div displaying images of the 3 newest games (The database is not implemented yet).
+
 function JuegosNuevos() {
     return (
         <div>

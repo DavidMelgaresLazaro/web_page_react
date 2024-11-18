@@ -5,6 +5,9 @@ type LoginFormValues = {
   password: string;
 };
 
+// LoginPage component that handles user login using the `react-hook-form` library for form validation and management.
+
+
 export default function LoginPage() {
   const { register, handleSubmit, formState } = useForm<LoginFormValues>({
     mode: "onChange",

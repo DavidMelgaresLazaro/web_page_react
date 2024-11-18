@@ -1,4 +1,6 @@
 
+// AboutPage component that provides information about the company.
+
 function AboutPage() {
   return (
     <>

@@ -8,6 +8,8 @@ type RegisterFormValues = {
   platform: string;
 };
 
+// This RegisterPage component handles the user registration process with form validation using react-hook-form.
+
 export default function RegisterPage() {
   const { register, handleSubmit, formState } = useForm<RegisterFormValues>({
     mode: "onChange",

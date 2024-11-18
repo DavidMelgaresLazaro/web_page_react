@@ -2,6 +2,13 @@ import { IoClose } from "react-icons/io5";
 
 import Menu from "./Menu"
 
+// Sidebar component that displays a vertical navigation menu with a close button.
+// Features:
+// - Fullscreen overlay with a fixed position, styled with a background color (indigo).
+// - Close button (using IoClose icon) in the top-right corner that triggers the `toggle` function to close the sidebar.
+// - Includes the `Menu` component rendered in a vertical layout.
+
+
 type SidebarProps = {
   toggle: () => void;
 }

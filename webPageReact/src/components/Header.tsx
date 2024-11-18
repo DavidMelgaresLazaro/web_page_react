@@ -7,6 +7,9 @@ import Sidebar from "./Sidebar";
 
 import useToggle from "../hooks/useToggle";
 
+
+// Header with the logo on the left side, and a menu on the right. On mobile, the menu transforms into a hamburger icon that opens a sidebar.
+
 function Header () {
   const [isOpenSidebar, toggleSidebar] = useToggle(false);
 
@@ -14,24 +17,24 @@ function Header () {
     <header className="bg-white text-black py-1">
       <div className="container px-2 sm:px-0 mx-auto flex items-center justify-between">
         
-        {/* Logo se alinea a la izquierda */}
+        
         <Logo />
   
-        {/* Esto se va a alinear a la derecha */}
+        
         <div className="flex items-center gap-4 ml-auto">
           <div className="hidden sm:block">
             <Menu />
           </div>
 
-          {/* Sidebar */}
+          
           {isOpenSidebar && <Sidebar toggle={toggleSidebar} />}
           
-          {/* Botón de menú en pantallas pequeñas */}
+          
           <button onClick={toggleSidebar} className="sm:hidden">
             <FaBars size={30} />
           </button>
 
-          {/* Usuario */}
+          
           <UserGreet name="Ivan" image="https://randomuser.me/api/portraits/men/3.jpg" />
         </div>
       </div>

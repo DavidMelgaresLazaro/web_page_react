@@ -6,6 +6,10 @@ interface MenuProps {
   vertical?: boolean;
 }
 
+// This is the Menu component, which dynamically generates a navigation menu with support for horizontal or vertical layouts. 
+// Active links are styled with specific classes, and user-specific links are conditionally rendered based on the `user` variable.
+
+
 function Menu(props: MenuProps) {
 
 
