@@ -1,6 +1,6 @@
 function DivBuyNow() {
     return (
-        <div className="bg-indigo-600 w-full" style={{ height: '75vh' }}>
+        <div className="bg-indigo-600 w-full rounded-lg" style={{ height: '75vh' }}>
             <div className="flex h-full">
                 {/* Lado izquierdo con el texto */}
                 <div className="w-1/2 flex items-center justify-center p-4">
@@ -15,7 +15,7 @@ function DivBuyNow() {
                     <img 
                         src="https://picsum.photos/id/400/400/400" 
                         alt="Juegos" 
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover rounded-lg"
                     />
                 </div>
             </div>
