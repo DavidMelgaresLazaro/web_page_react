@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "express": "^4.21.1",
-    "react-hook-form": "^7.53.2"
-  }
-}
