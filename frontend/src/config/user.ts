@@ -1,4 +1,4 @@
 // const user = null;
-const user = { name: 'Ivan'};
+const user = { name: "David" };
 
 export default user;
