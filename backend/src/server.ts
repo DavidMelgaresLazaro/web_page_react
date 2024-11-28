@@ -4,6 +4,8 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import HttpError from "./models/HttpError";
 import gamesRouter from "./routers/games.routes";
+import { db } from "./config/db/connection";
+import { users } from "./config/db/schema";
 
 const app = express();
 
@@ -11,8 +13,10 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.get("/", (req, res) => {
-  res.send("<h1>Home</h1>");
+app.get("/", async (req, res) => {
+  const users_db = await db.select().from(users);
+  res.send(users_db);
+  // res.send("<h1>Home</h1>");
 });
 
 app.use("/games", gamesRouter);
