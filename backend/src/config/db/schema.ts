@@ -1,22 +1,5 @@
-import { sqliteTable, AnySQLiteColumn, check, integer, text, numeric, foreignKey } from "drizzle-orm/sqlite-core"
+import { sqliteTable, AnySQLiteColumn, check, integer, text, foreignKey, numeric } from "drizzle-orm/sqlite-core"
   import { sql } from "drizzle-orm"
-
-export const users = sqliteTable("users", {
-	id: integer().primaryKey({ autoIncrement: true }),
-	name: text().notNull(),
-	email: text().notNull(),
-	password: text().notNull(),
-	role: text().default("user").notNull(),
-	address: text().notNull(),
-	createdAt: numeric("created_at").default(sql`(CURRENT_TIMESTAMP)`).notNull(),
-	modifiedAt: numeric("modified_at").default(sql`(CURRENT_TIMESTAMP)`).notNull(),
-},
-(table) => {
-	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
-	}
-});
 
 export const categories = sqliteTable("categories", {
 	id: integer().primaryKey({ autoIncrement: true }),
@@ -24,8 +7,8 @@ export const categories = sqliteTable("categories", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 
@@ -40,8 +23,8 @@ export const products = sqliteTable("products", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 
@@ -53,8 +36,8 @@ export const cart = sqliteTable("cart", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 
@@ -65,8 +48,8 @@ export const cartItems = sqliteTable("cart_items", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 
@@ -79,8 +62,8 @@ export const orders = sqliteTable("orders", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 
@@ -93,8 +76,27 @@ export const orderItems = sqliteTable("order_items", {
 },
 (table) => {
 	return {
-		usersCheck1: check("users_check_1", sql`role IN ('admin', 'user'`),
-		ordersCheck2: check("orders_check_2", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
+	}
+});
+
+export const users = sqliteTable("users", {
+	id: integer().primaryKey({ autoIncrement: true }),
+	name: text().notNull(),
+	email: text().notNull(),
+	password: text().notNull(),
+	role: text().default("user").notNull(),
+	address: text(),
+	createdAt: numeric("created_at").default(sql`(CURRENT_TIMESTAMP)`).notNull(),
+	modifiedAt: numeric("modified_at").default(sql`(CURRENT_TIMESTAMP)`).notNull(),
+	isDeleted: numeric("is_deleted").notNull(),
+	deletedAt: text("deleted_at").default("sql`(NULL)`"),
+},
+(table) => {
+	return {
+		ordersCheck1: check("orders_check_1", sql`status IN ('pending', 'processing', 'shipped', 'delivered'`),
+		usersCheck2: check("users_check_2", sql`role IN ('admin', 'user'`),
 	}
 });
 

@@ -13,6 +13,7 @@
   "dependencies": {
     "@libsql/client": "^0.14.0",
     "@types/cors": "^2.8.17",
+    "bcrypt": "^5.1.1",
     "bg": "^1.0.0",
     "cloudinary": "^2.5.1",
     "cors": "^2.8.5",
@@ -22,7 +23,9 @@
     "morgan": "^1.10.0",
     "pg": "^8.13.1",
     "postgres": "^3.4.5",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "zod": "^3.23.8",
+    "zod-error": "^1.5.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
