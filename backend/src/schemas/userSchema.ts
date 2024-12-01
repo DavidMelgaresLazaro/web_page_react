@@ -12,7 +12,6 @@ const AddUserSchema = z.object({
     .min(1, "Email required")
     .max(150, "Max 150 characters"),
   password: z.string().min(1, "Password required").max(16, "Max 16 characters"),
-  role: z.enum(["host", "guest"]),
 });
 
 const LoginSchema = AddUserSchema.pick({
