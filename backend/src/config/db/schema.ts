@@ -136,7 +136,7 @@ export const users = sqliteTable(
     name: text().notNull(),
     email: text().notNull(),
     password: text().notNull(),
-    role: text().default("user").notNull(),
+    role: text().default("user"),
     address: text(),
     createdAt: numeric("created_at")
       .default(sql`(CURRENT_TIMESTAMP)`)
@@ -144,8 +144,8 @@ export const users = sqliteTable(
     modifiedAt: numeric("modified_at")
       .default(sql`(CURRENT_TIMESTAMP)`)
       .notNull(),
-    isDeleted: numeric("is_deleted").notNull().default("0"),
-    deletedAt: text("deleted_at").default("NULL"),
+    isDeleted: integer("is_deleted").notNull().default(0),
+    deletedAt: text("deleted_at"),
   },
   (table) => {
     return {

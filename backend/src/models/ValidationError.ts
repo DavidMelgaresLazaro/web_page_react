@@ -1,12 +1,12 @@
-import { ZodError } from 'zod';
-import { generateErrorMessage } from 'zod-error';
+import { ZodError } from "zod";
+import { generateErrorMessage } from "zod-error";
 
 class ValidationError extends Error {
   statusCode = 400;
   errors: string;
 
   constructor(error: ZodError) {
-    super('Validation Error');
+    super("Validation Error");
     this.errors = this.stringifyErrors(error);
   }
 
@@ -17,26 +17,22 @@ class ValidationError extends Error {
       },
       path: {
         enabled: true,
-        transform: ({ value }) => (value ? value : ''),
-        type: 'breadcrumbs',
+        transform: ({ value }) => (value ? value : ""),
+        type: "breadcrumbs",
       },
       message: {
         enabled: true,
-        transform: ({ value }) => (value ? value : ''),
+        transform: ({ value }) => (value ? value : ""),
       },
 
       delimiter: {
-        component: '',
-        error: '\n',
+        component: "",
+        error: "\n",
       },
 
       transform: ({ index, pathComponent, messageComponent }) => {
-        const pathMessage = pathComponent
-          ? ` at ${pathComponent}`
-          : '';
-        return `Error ${
-          index + 1
-        }${pathMessage}: ${messageComponent}`;
+        const pathMessage = pathComponent ? ` at ${pathComponent}` : "";
+        return `Error ${index + 1}${pathMessage}: ${messageComponent}`;
       },
     });
     return errorString;
