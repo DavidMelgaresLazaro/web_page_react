@@ -1,7 +1,9 @@
 import { config } from "dotenv";
 import { drizzle } from "drizzle-orm/libsql";
 
-config({ path: ".env" }); // or .env.local
+config({ path: ".env" });
+
+//* Connection to the database
 
 export const db = drizzle({
   connection: {

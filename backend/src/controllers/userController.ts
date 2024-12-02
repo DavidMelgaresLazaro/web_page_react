@@ -8,6 +8,8 @@ import HttpError from "../models/HttpError";
 import ValidationError from "../models/ValidationError";
 import jwt from "jsonwebtoken";
 
+//* Controller to get all users
+
 async function getAllUsers(req: Request, res: Response) {
   try {
     const allUsers = await db
@@ -22,6 +24,8 @@ async function getAllUsers(req: Request, res: Response) {
   }
 }
 
+//* Controller to create a new user
+
 async function addOneUser(req: Request, res: Response) {
   const user = req.body;
 
@@ -33,6 +37,7 @@ async function addOneUser(req: Request, res: Response) {
   }
 
   try {
+    //* Hash the password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
 
@@ -53,6 +58,7 @@ async function addOneUser(req: Request, res: Response) {
     res.status(500).send({ message: "Error saving user to the database" });
   }
 }
+//* Controller to get a user by ID
 
 async function getOneUser(req: Request, res: Response) {
   const userId = req.params.userId;
@@ -74,6 +80,7 @@ async function getOneUser(req: Request, res: Response) {
 
   res.send(user);
 }
+//* Controller for login
 async function login(req: Request, res: Response) {
   const { success, data: loginUser, error } = LoginSchema.safeParse(req.body);
 
@@ -99,7 +106,7 @@ async function login(req: Request, res: Response) {
     throw new HttpError(404, "Email or password incorrect");
   }
 
-  //* Por fin sabemos aquí que eres tú -- TOKEN
+  //* At last, we know here that it's you -- TOKEN
 
   const userToSend = {
     id: user.id,
@@ -109,6 +116,7 @@ async function login(req: Request, res: Response) {
     expiresIn: "1d",
   });
 
+  //* Set the token in a cookie
   res.cookie("access_token", token, {
     httpOnly: true,
     maxAge: 24 * 60 * 60,

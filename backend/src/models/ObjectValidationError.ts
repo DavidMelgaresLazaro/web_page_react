@@ -1,5 +1,6 @@
-import { ZodError } from 'zod';
+import { ZodError } from "zod";
 
+//* Define a custom error class ObjectValidationError that extends the built-in Error class
 class ObjectValidationError extends Error {
   statusCode = 400;
   errors: {
@@ -9,7 +10,7 @@ class ObjectValidationError extends Error {
   };
 
   constructor(error: ZodError) {
-    super('Validation Error');
+    super("Validation Error");
     this.errors = this.flattenErrors(error);
   }
 

@@ -6,7 +6,8 @@ $formLogin.onsubmit = async (event) => {
   const email = $formLogin.email.value;
   const password = $formLogin.password.value;
 
-  const resp = await fetch("http://localhost:4321/login", {
+  // Send a POST request to the server with the email and password
+  const resp = await fetch("http://localhost:3000/login", {
     method: "POST",
     body: JSON.stringify({ email, password }),
     headers: {
@@ -14,6 +15,7 @@ $formLogin.onsubmit = async (event) => {
     },
   });
 
+  // Parse the JSON response from the server
   const data = await resp.json();
 
   console.log(data);

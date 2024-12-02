@@ -9,6 +9,7 @@ import {
 } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
+//* Table Users
 export const users = sqliteTable(
   "users",
   {
@@ -36,6 +37,7 @@ export const users = sqliteTable(
   }
 );
 
+//* Table Categories
 export const categories = sqliteTable(
   "categories",
   {
@@ -53,6 +55,7 @@ export const categories = sqliteTable(
   }
 );
 
+//* Table Products
 export const products = sqliteTable(
   "products",
   {
@@ -75,6 +78,7 @@ export const products = sqliteTable(
   }
 );
 
+//* Table Carts
 export const cart = sqliteTable(
   "cart",
   {
@@ -96,6 +100,7 @@ export const cart = sqliteTable(
   }
 );
 
+//* Table Cart Items
 export const cartItems = sqliteTable(
   "cart_items",
   {
@@ -114,6 +119,7 @@ export const cartItems = sqliteTable(
   }
 );
 
+//* Table Orders
 export const orders = sqliteTable(
   "orders",
   {
@@ -136,6 +142,7 @@ export const orders = sqliteTable(
   }
 );
 
+//* Table Order Items
 export const orderItems = sqliteTable(
   "order_items",
   {

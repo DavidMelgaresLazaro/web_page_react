@@ -1,3 +1,5 @@
+//* Define a custom error class HttpError that extends the built-in Error class
+
 class HttpError extends Error {
   statusCode: number;
 

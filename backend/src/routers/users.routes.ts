@@ -8,9 +8,10 @@ import {
 
 const userRouter = Router();
 
-// Rutas para la gestión de usuarios
-userRouter.get("/", getAllUsers); // Obtener todos los usuarios
-userRouter.post("/", addOneUser); // Crear un nuevo usuario
+//* Define routes for user management
+
+userRouter.get("/", getAllUsers);
+userRouter.post("/", addOneUser);
 userRouter.get("/:userId", getOneUser);
 
 export default userRouter;

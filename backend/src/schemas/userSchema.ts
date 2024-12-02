@@ -1,9 +1,11 @@
 import { z } from "zod";
 
+//* Defining a schema to validate an ID, ensuring it is a number
 const IdSchema = z.coerce.number({
   invalid_type_error: "The ID must be a number",
 });
 
+//* Defining a schema for adding a user, which requires the name, email, and password fields
 const AddUserSchema = z.object({
   name: z.string().min(1, "Name required").max(50, "Max 50 characters"),
   email: z
@@ -14,6 +16,7 @@ const AddUserSchema = z.object({
   password: z.string().min(1, "Password required").max(16, "Max 16 characters"),
 });
 
+//* Defining a schema for login, which only requires the email and password fields
 const LoginSchema = AddUserSchema.pick({
   email: true,
   password: true,

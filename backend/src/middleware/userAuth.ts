@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import HttpError from "../models/HttpError";
 import jwt from "jsonwebtoken";
 
+//* Checks if the token is valid
 function userAuth(req: Request, res: Response, next: NextFunction) {
   const token = req.cookies.access_token;
 

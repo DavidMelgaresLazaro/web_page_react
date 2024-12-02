@@ -7,6 +7,7 @@ $formRegister.onsubmit = (event) => {
   const password = $formRegister.password.value;
   const role = $formRegister.role.value;
 
+  // Create an object with the values from the form fields
   const newUser = {
     name,
     email,
@@ -14,7 +15,8 @@ $formRegister.onsubmit = (event) => {
     role,
   };
 
-  fetch("http://localhost:4321/users", {
+  // Send the data to the server using the Fetch API
+  fetch("http://localhost:3000/users", {
     method: "POST",
     body: JSON.stringify(newUser),
     headers: {

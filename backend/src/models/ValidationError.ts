@@ -1,6 +1,7 @@
 import { ZodError } from "zod";
 import { generateErrorMessage } from "zod-error";
 
+//* Define a custom error class ValidationError that extends the built-in Error class
 class ValidationError extends Error {
   statusCode = 400;
   errors: string;
