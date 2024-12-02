@@ -1,4 +1,4 @@
-const $formRegister = document.querySelector('.form-register');
+const $formRegister = document.querySelector(".form-register");
 
 $formRegister.onsubmit = (event) => {
   event.preventDefault();
@@ -14,12 +14,13 @@ $formRegister.onsubmit = (event) => {
     role,
   };
 
-  fetch('http://localhost:4321/users', {
-    method: 'POST',
+  fetch("http://localhost:4321/users", {
+    method: "POST",
     body: JSON.stringify(newUser),
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
+    credentials: "include",
   })
     .then((response) => response.json())
     .then((data) => console.log(data))

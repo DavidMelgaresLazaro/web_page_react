@@ -5,8 +5,8 @@ import { users } from "../config/db/schema";
 import bcrypt from "bcrypt";
 import { AddUserSchema, LoginSchema, IdSchema } from "../schemas/userSchema";
 import HttpError from "../models/HttpError";
-import { z } from "zod";
 import ValidationError from "../models/ValidationError";
+import jwt from "jsonwebtoken";
 
 async function getAllUsers(req: Request, res: Response) {
   try {
@@ -105,6 +105,16 @@ async function login(req: Request, res: Response) {
     id: user.id,
     name: user.name,
   };
+  const token = jwt.sign(userToSend, process.env.TOKEN_SECRET!, {
+    expiresIn: "1d",
+  });
+
+  res.cookie("access_token", token, {
+    httpOnly: true,
+    maxAge: 24 * 60 * 60,
+    sameSite: "none",
+    secure: true,
+  });
 
   res.send(userToSend);
 }
