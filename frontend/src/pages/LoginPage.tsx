@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type LoginFormValues = {
   email: string;
@@ -14,7 +15,7 @@ export default function LoginPage() {
   } = useForm<LoginFormValues>({
     mode: "onChange", // Validación en tiempo real
   });
-
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const response = await fetch("/api/login", {
@@ -30,6 +31,7 @@ export default function LoginPage() {
       if (response.ok) {
         console.log("Inicio de sesión exitoso:", result);
         // Redirige o muestra una notificación de éxito
+        navigate("/");
       } else {
         console.error("Error al iniciar sesión:", result.message);
         // Muestra un mensaje de error al usuario

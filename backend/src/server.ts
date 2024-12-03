@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 
 import userRouter from "./routers/users.routes"; // Importa las rutas de usuarios
 import HttpError from "./models/HttpError";
-import { login } from "./controllers/userController";
+import { login, registerUser } from "./controllers/userController";
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://127.0.0.1:5173",
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
     credentials: true,
   })
 );
@@ -23,6 +23,8 @@ app.use(cookieParser());
 
 // Usa las rutas de usuario
 app.use("/users", userRouter);
+
+app.post("/register", registerUser);
 
 app.post("/login", login);
 

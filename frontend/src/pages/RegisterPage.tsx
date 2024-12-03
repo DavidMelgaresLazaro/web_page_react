@@ -1,11 +1,11 @@
-import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 type RegisterFormValues = {
   name: string;
   email: string;
   password: string;
-  country: string;
-  platform: string;
+  address: string;
 };
 
 // Este componente maneja el registro de usuario con validación de formulario usando react-hook-form
@@ -18,14 +18,69 @@ export default function RegisterPage() {
     mode: "onChange", // Validación en tiempo real
   });
 
-  const onSubmit: SubmitHandler<RegisterFormValues> = (data) => {
-    console.log("Registro exitoso:", data);
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
+    try {
+      const registerResponse = await fetch("http://localhost:4321/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+
+      if (!registerResponse.ok) {
+        const error = await registerResponse.json();
+        console.error("Error al registrar:", error.message);
+        alert(`Error al registrar: ${error.message}`);
+        return;
+      }
+
+      console.log("Registro exitoso. Iniciando sesión...");
+
+      const loginResponse = await fetch("http://localhost:4321/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+        credentials: "include", // Incluye cookies si el servidor las requiere
+      });
+
+      if (!loginResponse.ok) {
+        const error = await loginResponse.json();
+        console.error(
+          "Error al iniciar sesión automáticamente:",
+          error.message
+        );
+        alert(
+          `Registro exitoso, pero fallo al iniciar sesión: ${error.message}`
+        );
+        return;
+      }
+
+      const loginData = await loginResponse.json();
+      console.log("Inicio de sesión exitoso:", loginData);
+
+      // Redirige al usuario al dashboard utilizando React Router
+      alert("Registro e inicio de sesión exitosos");
+      navigate("/"); // Redirige con React Router
+    } catch (error) {
+      console.error("Error durante el registro o inicio de sesión:", error);
+      alert("Ocurrió un error. Inténtalo nuevamente.");
+    }
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen  py-8 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">Registro</h2>
+        <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">
+          Registro
+        </h2>
 
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* Campo Nombre */}
@@ -41,7 +96,9 @@ export default function RegisterPage() {
               placeholder="Nombre..."
             />
             {errors.name && (
-              <span className="absolute text-red-500 text-sm">{errors.name.message}</span>
+              <span className="absolute text-red-500 text-sm">
+                {errors.name.message}
+              </span>
             )}
           </div>
 
@@ -60,7 +117,9 @@ export default function RegisterPage() {
               placeholder="Email..."
             />
             {errors.email && (
-              <span className="absolute text-red-500 text-sm">{errors.email.message}</span>
+              <span className="absolute text-red-500 text-sm">
+                {errors.email.message}
+              </span>
             )}
           </div>
 
@@ -77,42 +136,27 @@ export default function RegisterPage() {
               placeholder="Contraseña..."
             />
             {errors.password && (
-              <span className="absolute text-red-500 text-sm">{errors.password.message}</span>
+              <span className="absolute text-red-500 text-sm">
+                {errors.password.message}
+              </span>
             )}
           </div>
 
           {/* Campo País */}
           <div className="relative mb-6">
             <input
-              {...register("country", {
-                required: "País requerido",
+              {...register("address", {
+                required: "Dirección requerida",
                 minLength: { value: 2, message: "Mínimo 2 caracteres" },
               })}
               className="input"
               type="text"
-              placeholder="País..."
+              placeholder="Dirección..."
             />
-            {errors.country && (
-              <span className="absolute text-red-500 text-sm">{errors.country.message}</span>
-            )}
-          </div>
-
-          {/* Campo Plataforma */}
-          <div className="relative mb-6">
-            <select
-              {...register("platform", {
-                required: "Selecciona una plataforma",
-              })}
-              className="input"
-            >
-              <option value="">Selecciona una plataforma...</option>
-              <option value="Xbox">Xbox Series X</option>
-              <option value="PS5">PS5</option>
-              <option value="PC">PC</option>
-              <option value="Nintendo Switch">Nintendo Switch</option>
-            </select>
-            {errors.platform && (
-              <span className="absolute text-red-500 text-sm">{errors.platform.message}</span>
+            {errors.address && (
+              <span className="absolute text-red-500 text-sm">
+                {errors.address.message}
+              </span>
             )}
           </div>
 
@@ -120,7 +164,9 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={!isValid}
-            className={`w-full bg-indigo-600 text-white font-semibold rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 ${!isValid ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`w-full bg-indigo-600 text-white font-semibold rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 ${
+              !isValid ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             Registrar
           </button>

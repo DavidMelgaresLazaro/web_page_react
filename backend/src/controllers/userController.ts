@@ -26,9 +26,10 @@ async function getAllUsers(req: Request, res: Response) {
 
 //* Controller to create a new user
 
-async function addOneUser(req: Request, res: Response) {
+async function registerUser(req: Request, res: Response) {
   const user = req.body;
 
+  // Validación con Zod
   const { success, data: newUser, error } = AddUserSchema.safeParse(user);
   if (!success) {
     return res
@@ -37,10 +38,20 @@ async function addOneUser(req: Request, res: Response) {
   }
 
   try {
-    //* Hash the password
+    // Verificar si el correo ya está registrado
+    const existingUser = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, newUser.email));
+    if (existingUser.length > 0) {
+      return res.status(409).send({ message: "El email ya está registrado." });
+    }
+
+    // Hash de la contraseña
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(newUser.password, saltRounds);
 
+    // Crear usuario
     const userToInsert = { ...newUser, password: hashedPassword };
 
     const [createdUser] = await db
@@ -50,12 +61,21 @@ async function addOneUser(req: Request, res: Response) {
         id: users.id,
         name: users.name,
         email: users.email,
+        address: users.address,
       });
 
-    res.status(201).send(createdUser);
+    // Generar token JWT
+    const token = jwt.sign(
+      { id: createdUser.id },
+      process.env.JWT_SECRET || "default_secret", // Usa una variable de entorno para mayor seguridad
+      { expiresIn: "1h" }
+    );
+
+    // Respuesta exitosa con el usuario y el token
+    res.status(201).send({ user: createdUser, token });
   } catch (err) {
-    console.error("Database error:", err);
-    res.status(500).send({ message: "Error saving user to the database" });
+    console.error("Error en el servidor:", err);
+    res.status(500).send({ message: "Error interno del servidor" });
   }
 }
 //* Controller to get a user by ID
@@ -128,4 +148,4 @@ async function login(req: Request, res: Response) {
   res.send(userToSend);
 }
 
-export { getAllUsers, addOneUser, getOneUser, login };
+export { getAllUsers, registerUser, getOneUser, login };
