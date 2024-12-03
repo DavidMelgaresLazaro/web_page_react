@@ -16,7 +16,7 @@ $formRegister.onsubmit = (event) => {
   };
 
   // Send the data to the server using the Fetch API
-  fetch("http://localhost:3000/users", {
+  fetch("http://localhost:4321/users", {
     method: "POST",
     body: JSON.stringify(newUser),
     headers: {

@@ -82,6 +82,7 @@ async function getOneUser(req: Request, res: Response) {
 }
 //* Controller for login
 async function login(req: Request, res: Response) {
+  console.log("login");
   const { success, data: loginUser, error } = LoginSchema.safeParse(req.body);
 
   if (!success) {
@@ -115,7 +116,7 @@ async function login(req: Request, res: Response) {
   const token = jwt.sign(userToSend, process.env.TOKEN_SECRET!, {
     expiresIn: "1d",
   });
-
+  console.log(token);
   //* Set the token in a cookie
   res.cookie("access_token", token, {
     httpOnly: true,
