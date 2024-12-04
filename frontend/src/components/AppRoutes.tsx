@@ -14,25 +14,25 @@ import PrivateRoute from "./PrivateRoute";
 export default function AppRoutes() {
   return (
     <Routes>
+      {/* Rutas públicas */}
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Route>
+
+      {/* Rutas generales */}
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/cesta" element={<CestaPage />} />
-      //* Rutas públicas
-      <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />} />
-      </Route>
-      <Route element={<PublicRoute />}>
-        <Route path="/register" element={<RegisterPage />} />
-      </Route>
-      //*================ //! Rutas privadas
+
+      {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfilePage />}>
           <Route path="books" element={<ProfileBooksPage />} />
           <Route path="account" element={<ProfileAccountPage />} />
         </Route>
       </Route>
-      //!================
     </Routes>
   );
 }

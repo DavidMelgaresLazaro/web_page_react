@@ -16,6 +16,7 @@ export default function LoginPage() {
     mode: "onChange", // Validación en tiempo real
   });
   const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
       const response = await fetch("http://localhost:3000/login", {
@@ -24,25 +25,31 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-        credentials: "include",
+        credentials: "include", // Incluye las credenciales si es necesario para la sesión
       });
 
       const result = await response.json();
+
       if (response.ok) {
+        // Si la autenticación es exitosa, guarda el usuario en localStorage
+        localStorage.setItem("user", JSON.stringify(result)); // Guarda el usuario en localStorage
         console.log("Inicio de sesión exitoso:", result);
-        // Redirige o muestra una notificación de éxito
+
+        // Redirige al perfil
         navigate("/");
-      } else {
         console.error("Error al iniciar sesión:", result.message);
         // Muestra un mensaje de error al usuario
+        alert(`Error: ${result.message}`);
       }
     } catch (error) {
       console.error("Error de red:", error);
+      // Muestra un mensaje genérico si hay un problema de red
+      alert("Error de red. Intenta nuevamente más tarde.");
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen  px-4">
+    <div className="flex justify-center items-center min-h-screen px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">
           Iniciar Sesión

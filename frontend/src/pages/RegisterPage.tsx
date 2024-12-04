@@ -19,8 +19,10 @@ export default function RegisterPage() {
   });
 
   const navigate = useNavigate();
+
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
+      // Primero intentamos registrar al usuario
       const registerResponse = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: {
@@ -39,6 +41,7 @@ export default function RegisterPage() {
 
       console.log("Registro exitoso. Iniciando sesión...");
 
+      // Después intentamos iniciar sesión automáticamente con las credenciales del usuario registrado
       const loginResponse = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
@@ -63,12 +66,16 @@ export default function RegisterPage() {
         return;
       }
 
-      const loginData = await loginResponse.json();
-      console.log("Inicio de sesión exitoso:", loginData);
+      // Si la autenticación es exitosa, obtenemos los datos de usuario
+      const userData = await loginResponse.json();
+      console.log("Inicio de sesión exitoso:", userData);
 
-      // Redirige al usuario al dashboard utilizando React Router
+      // Guarda los datos del usuario en localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // Redirige al usuario al dashboard o página principal
       alert("Registro e inicio de sesión exitosos");
-      navigate("/"); // Redirige con React Router
+      navigate("/"); // Redirige a la página de inicio o cualquier otra página deseada
     } catch (error) {
       console.error("Error durante el registro o inicio de sesión:", error);
       alert("Ocurrió un error. Inténtalo nuevamente.");
@@ -76,7 +83,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen  py-8 px-4">
+    <div className="flex justify-center items-center min-h-screen py-8 px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
         <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">
           Registro
@@ -142,7 +149,7 @@ export default function RegisterPage() {
             )}
           </div>
 
-          {/* Campo País */}
+          {/* Campo Dirección */}
           <div className="relative mb-6">
             <input
               {...register("address", {
