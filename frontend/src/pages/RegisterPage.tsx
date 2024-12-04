@@ -21,7 +21,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
-      const registerResponse = await fetch("http://localhost:4321/register", {
+      const registerResponse = await fetch("http://localhost:3000/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export default function RegisterPage() {
 
       console.log("Registro exitoso. Iniciando sesión...");
 
-      const loginResponse = await fetch("http://localhost:4321/login", {
+      const loginResponse = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-import user from "../config/user";
 
 interface MenuProps {
   className?: string;
@@ -15,9 +14,6 @@ function Menu(props: MenuProps) {
   const classes = `flex gap-4 ${className} ${
     vertical ? "flex-col items-center" : ""
   }`;
-
-  const cookie = document.cookie;
-  const existCookie = cookie !== null;
 
   return (
     <nav className={classes}>
@@ -45,30 +41,27 @@ function Menu(props: MenuProps) {
       >
         Cesta🛒
       </NavLink>
-      {existCookie && (
-        <NavLink
-          className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
-          to="/login"
-        >
-          Iniciar Sesión
-        </NavLink>
-      )}
-      {existCookie && (
-        <NavLink
-          className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
-          to="/register"
-        >
-          Registro
-        </NavLink>
-      )}
-      {!existCookie && (
-        <NavLink
-          className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
-          to="/profile"
-        >
-          Profile
-        </NavLink>
-      )}
+
+      <NavLink
+        className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
+        to="/login"
+      >
+        Iniciar Sesión
+      </NavLink>
+
+      <NavLink
+        className="[&.active]:bg-indigo-600 [&.active]:text-white  [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
+        to="/register"
+      >
+        Registro
+      </NavLink>
+
+      <NavLink
+        className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
+        to="/profile"
+      >
+        Profile
+      </NavLink>
     </nav>
   );
 }

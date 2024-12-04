@@ -11,37 +11,28 @@ import RegisterPage from "../pages/RegisterPage";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 
-
-
 export default function AppRoutes() {
   return (
     <Routes>
-
-      <Route path="/" element={<HomePage />}/>
-      <Route path="/about" element={<AboutPage />}/>
-      <Route path="/contact" element={<ContactPage />}/>
-      <Route path="/cesta" element={<CestaPage />}/>
-
+      <Route path="/" element={<HomePage />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+      <Route path="/cesta" element={<CestaPage />} />
       //* Rutas públicas
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginPage />}/>
+        <Route path="/login" element={<LoginPage />} />
       </Route>
       <Route element={<PublicRoute />}>
-        <Route path="/register" element={<RegisterPage />}/>
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
-      //*================
-
-      //! Rutas privadas
+      //*================ //! Rutas privadas
       <Route element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfilePage />}>
-          
-          <Route path="books" element={<ProfileBooksPage />}/>
-          <Route path="account" element={<ProfileAccountPage />}/>
-        
+          <Route path="books" element={<ProfileBooksPage />} />
+          <Route path="account" element={<ProfileAccountPage />} />
         </Route>
       </Route>
       //!================
-
-    </Routes> 
-  )
+    </Routes>
+  );
 }

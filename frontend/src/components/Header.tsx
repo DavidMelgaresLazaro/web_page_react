@@ -28,12 +28,10 @@ function Header() {
             <FaBars size={30} />
           </button>
 
-          {cookie !== null && (
-            <UserGreet
-              name={cookie}
-              image="https://randomuser.me/api/portraits/men/8.jpg"
-            />
-          )}
+          <UserGreet
+            name="David"
+            image="https://randomuser.me/api/portraits/men/8.jpg"
+          />
         </div>
       </div>
     </header>

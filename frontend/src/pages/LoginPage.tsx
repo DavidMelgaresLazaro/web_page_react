@@ -18,7 +18,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
