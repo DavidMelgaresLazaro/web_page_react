@@ -9,18 +9,21 @@ import ProfilePage from "./pages/ProfilePage";
 import ProfileBooksPage from "./pages/ProfileBooksPage";
 import ProfileAccountPage from "./pages/ProfileAccountPage";
 import AppRoutes from "./components/AppRoutes";
+import UserProvider from "./contexts/UserProvider";
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Header />
+    <UserProvider>
+      <div className="flex flex-col min-h-screen">
+        <Header />
 
-      <main className="flex-grow mx-20 py-8">
-        <AppRoutes />
-      </main>
+        <main className="flex-grow mx-20 py-8">
+          <AppRoutes />
+        </main>
 
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </UserProvider>
   );
 }
 

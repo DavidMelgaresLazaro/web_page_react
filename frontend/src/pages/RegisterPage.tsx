@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import useUserContext from "../hooks/useUserContext";
 
 type RegisterFormValues = {
   name: string;
@@ -10,6 +11,7 @@ type RegisterFormValues = {
 
 // Este componente maneja el registro de usuario con validación de formulario usando react-hook-form
 export default function RegisterPage() {
+  const { logIn } = useUserContext();
   const {
     register,
     handleSubmit,
@@ -42,43 +44,33 @@ export default function RegisterPage() {
       console.log("Registro exitoso. Iniciando sesión...");
 
       // Después intentamos iniciar sesión automáticamente con las credenciales del usuario registrado
-      const loginResponse = await fetch("http://localhost:3000/login", {
+      const response = await fetch("http://localhost:3000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-        }),
-        credentials: "include", // Incluye cookies si el servidor las requiere
+        body: JSON.stringify(data),
+        credentials: "include",
       });
 
-      if (!loginResponse.ok) {
-        const error = await loginResponse.json();
-        console.error(
-          "Error al iniciar sesión automáticamente:",
-          error.message
-        );
-        alert(
-          `Registro exitoso, pero fallo al iniciar sesión: ${error.message}`
-        );
-        return;
+      const result = await response.json();
+
+      if (response.ok) {
+        // Si la autenticación es exitosa, guarda el usuario en localStorage
+        localStorage.setItem("user", JSON.stringify(result)); // Guarda el usuario en localStorage
+        logIn(result); // Llamamos a logIn para actualizar el estado global en el contexto
+
+        console.log("Inicio de sesión exitoso:", result);
+        navigate("/"); // Redirige al perfil
+
+        alert(`Inicio de sesión exitoso: ${result.name}`);
+      } else {
+        console.error("Error al iniciar sesión:", result.message);
+        alert(`Error: ${result.message || "Credenciales incorrectas"}`);
       }
-
-      // Si la autenticación es exitosa, obtenemos los datos de usuario
-      const userData = await loginResponse.json();
-      console.log("Inicio de sesión exitoso:", userData);
-
-      // Guarda los datos del usuario en localStorage
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      // Redirige al usuario al dashboard o página principal
-      alert("Registro e inicio de sesión exitosos");
-      navigate("/"); // Redirige a la página de inicio o cualquier otra página deseada
     } catch (error) {
-      console.error("Error durante el registro o inicio de sesión:", error);
-      alert("Ocurrió un error. Inténtalo nuevamente.");
+      console.error("Error de red:", error);
+      alert("Error de red. Intenta nuevamente más tarde.");
     }
   };
 

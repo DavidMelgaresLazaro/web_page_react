@@ -1,19 +1,20 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import useUserContext from "../hooks/useUserContext"; // Asegúrate de importar el hook para acceder al contexto
 
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
-// Componente LoginPage que maneja el inicio de sesión del usuario con validación de formulario usando react-hook-form.
 export default function LoginPage() {
+  const { logIn } = useUserContext(); // Usamos logIn para actualizar el contexto
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormValues>({
-    mode: "onChange", // Validación en tiempo real
+    mode: "onChange",
   });
   const navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export default function LoginPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-        credentials: "include", // Incluye las credenciales si es necesario para la sesión
+        credentials: "include",
       });
 
       const result = await response.json();
@@ -33,12 +34,11 @@ export default function LoginPage() {
       if (response.ok) {
         // Si la autenticación es exitosa, guarda el usuario en localStorage
         localStorage.setItem("user", JSON.stringify(result)); // Guarda el usuario en localStorage
+        logIn(result); // Llamamos a logIn para actualizar el estado global en el contexto
+
         console.log("Inicio de sesión exitoso:", result);
+        navigate("/"); // Redirige al perfil
 
-        // Redirige al perfil
-        navigate("/");
-
-        // Accede a la propiedad 'name' desde 'result'
         alert(`Inicio de sesión exitoso: ${result.name}`);
       } else {
         console.error("Error al iniciar sesión:", result.message);
@@ -46,7 +46,6 @@ export default function LoginPage() {
       }
     } catch (error) {
       console.error("Error de red:", error);
-      // Muestra un mensaje genérico si hay un problema de red
       alert("Error de red. Intenta nuevamente más tarde.");
     }
   };
@@ -57,7 +56,6 @@ export default function LoginPage() {
         <h2 className="text-center text-2xl font-bold mb-6 text-gray-800">
           Iniciar Sesión
         </h2>
-
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           {/* Campo Email */}
           <div className="relative mb-6">
