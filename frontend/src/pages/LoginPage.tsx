@@ -32,12 +32,10 @@ export default function LoginPage() {
       const result = await response.json();
 
       if (response.ok) {
-        // Si la autenticación es exitosa, guarda el usuario en localStorage
-        localStorage.setItem("user", JSON.stringify(result)); // Guarda el usuario en localStorage
-        logIn(result); // Llamamos a logIn para actualizar el estado global en el contexto
+        logIn(result);
 
         console.log("Inicio de sesión exitoso:", result);
-        navigate("/"); // Redirige al perfil
+        navigate("/");
 
         alert(`Inicio de sesión exitoso: ${result.name}`);
       } else {

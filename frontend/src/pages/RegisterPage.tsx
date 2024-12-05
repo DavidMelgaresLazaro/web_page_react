@@ -56,14 +56,12 @@ export default function RegisterPage() {
       const result = await response.json();
 
       if (response.ok) {
-        // Si la autenticación es exitosa, guarda el usuario en localStorage
-        localStorage.setItem("user", JSON.stringify(result)); // Guarda el usuario en localStorage
         logIn(result); // Llamamos a logIn para actualizar el estado global en el contexto
 
         console.log("Inicio de sesión exitoso:", result);
         navigate("/"); // Redirige al perfil
 
-        alert(`Inicio de sesión exitoso: ${result.name}`);
+        alert(`Registro exitoso: ${result.name}`);
       } else {
         console.error("Error al iniciar sesión:", result.message);
         alert(`Error: ${result.message || "Credenciales incorrectas"}`);

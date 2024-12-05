@@ -7,12 +7,16 @@ interface MenuProps {
 }
 
 function Menu(props: MenuProps) {
-  const { user } = useUserContext(); // Obtenemos el estado del usuario
+  const { user, logOut } = useUserContext(); // Obtenemos el estado del usuario
   const { className, vertical } = props;
 
   const classes = `flex gap-4 ${className} ${
     vertical ? "flex-col items-center" : ""
   }`;
+
+  const handleLogout = () => {
+    logOut();
+  };
 
   return (
     <nav className={classes}>
@@ -64,6 +68,12 @@ function Menu(props: MenuProps) {
           >
             Profile
           </NavLink>
+          <button
+            onClick={handleLogout}
+            className="text-white bg-red-600 hover:bg-red-800 px-4 py-2 rounded-lg"
+          >
+            Logout
+          </button>
         </>
       )}
     </nav>
