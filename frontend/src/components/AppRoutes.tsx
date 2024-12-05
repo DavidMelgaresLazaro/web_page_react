@@ -24,10 +24,10 @@ export default function AppRoutes() {
       <Route path="/" element={<HomePage />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/contact" element={<ContactPage />} />
-      <Route path="/cesta" element={<CestaPage />} />
 
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
+        <Route path="/cesta" element={<CestaPage />} />
         <Route path="/profile" element={<ProfilePage />}>
           <Route path="books" element={<ProfileBooksPage />} />
           <Route path="account" element={<ProfileAccountPage />} />

@@ -37,9 +37,12 @@ export default function LoginPage() {
 
         // Redirige al perfil
         navigate("/");
+
+        // Accede a la propiedad 'name' desde 'result'
+        alert(`Inicio de sesión exitoso: ${result.name}`);
+      } else {
         console.error("Error al iniciar sesión:", result.message);
-        // Muestra un mensaje de error al usuario
-        alert(`Error: ${result.message}`);
+        alert(`Error: ${result.message || "Credenciales incorrectas"}`);
       }
     } catch (error) {
       console.error("Error de red:", error);

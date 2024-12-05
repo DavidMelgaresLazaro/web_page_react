@@ -1,46 +1,50 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { User } from "../config/types"; // Asegúrate de que la ruta es correcta
+import { User } from "../config/types";
 
+//Utilizamos la carga inicial para que no se ejecute antes y pueda comprobar si el usaurio esta en localStorage
 function PrivateRoute() {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // Nuevo estado para manejar la carga inicial
 
   useEffect(() => {
-    // Verificar si 'user' está en localStorage
     const savedUser = localStorage.getItem("user");
-    console.log("savedUser from localStorage:", savedUser); // Imprime lo que tienes en localStorage
+    console.log("savedUser from localStorage:", savedUser);
 
     if (savedUser) {
       try {
-        // Si hay algo en localStorage, intentamos parsearlo
         const parsedUser = JSON.parse(savedUser);
-        console.log("Parsed user:", parsedUser); // Imprime el objeto del usuario después de parsearlo
+        console.log("Parsed user:", parsedUser);
 
-        // Verificamos que el usuario tenga las propiedades necesarias
-        if (parsedUser && parsedUser.email && parsedUser.name) {
-          setUser(parsedUser);
+        if (parsedUser && parsedUser.id && parsedUser.name) {
+          setUser(parsedUser); // Usuario válido
         } else {
-          console.log("User data is invalid or incomplete.");
-          setUser(null); // Si el objeto no es válido, limpiamos el estado
+          console.log("User data is invalid or incomplete:", parsedUser);
+          setUser(null);
         }
       } catch (error) {
         console.error("Error parsing user from localStorage:", error);
-        setUser(null); // Si el parseo falla, limpiamos el estado
+        setUser(null);
       }
     } else {
       console.log("No user found in localStorage.");
-      setUser(null); // Si no hay datos en localStorage, limpiamos el estado
+      setUser(null);
     }
+
+    setIsLoading(false); // Marcar que terminó la carga inicial
   }, []);
 
-  // Si no hay usuario, redirige al login
+  if (isLoading) {
+    return <div>Loading...</div>; // Renderizar un estado de carga mientras validamos
+  }
+
   if (user === null) {
     console.log("User is not authenticated, redirecting to login.");
     return <Navigate to="/login" />;
   }
 
   console.log("User is authenticated, rendering the private route.");
-  return <Outlet />; // Si el usuario está autenticado, muestra la ruta privada
+  return <Outlet />;
 }
 
 export default PrivateRoute;
