@@ -9,25 +9,27 @@ type UserContextType = {
 
 const UserContext = createContext<UserContextType | null>(null);
 
+const LOCAL_STORAGE_USER_KEY = "gamexx-user";
+
 type UserProviderProps = {
   children: ReactNode;
 };
 function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(() => {
-    const user = localStorage.getItem("rs-user");
+    const user = localStorage.getItem(LOCAL_STORAGE_USER_KEY);
 
     return user ? JSON.parse(user) : null;
   });
 
   function logIn(user: User) {
     setUser(user);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(user));
   }
 
   function logOut() {
     setUser(null);
 
-    localStorage.removeItem("user");
+    localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
   }
 
   const valueForContext = {

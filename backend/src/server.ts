@@ -8,6 +8,8 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routers/users.routes"; // Importa las rutas de usuarios
 import HttpError from "./models/HttpError";
 import { login, registerUser } from "./controllers/userController";
+import { products } from "./config/db/schema";
+import products_routes from "./routers/products.routes";
 
 const app = express();
 
@@ -24,6 +26,8 @@ app.use(cookieParser());
 // Usa las rutas de usuario
 app.use("/users", userRouter);
 
+app.use("/products", products_routes);
+
 app.post("/register", registerUser);
 
 app.post("/login", login);
@@ -34,7 +38,6 @@ app.use((req, res, next) => {
 
 app.get("/users", async (req, res) => {
   const token = req.cookies.access_token;
-  console.log(token);
 
   if (!token) {
     throw new HttpError(401, "You must send an access token");

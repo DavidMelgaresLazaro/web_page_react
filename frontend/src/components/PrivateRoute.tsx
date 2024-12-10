@@ -8,7 +8,7 @@ function PrivateRoute() {
   const [isLoading, setIsLoading] = useState(true); // Nuevo estado para manejar la carga inicial
 
   useEffect(() => {
-    const savedUser = localStorage.getItem("user");
+    const savedUser = localStorage.getItem("gamexx-user");
     console.log("savedUser from localStorage:", savedUser);
 
     if (savedUser) {
