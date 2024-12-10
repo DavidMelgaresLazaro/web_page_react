@@ -48,7 +48,7 @@ function Menu(props: MenuProps) {
             Iniciar Sesión
           </NavLink>
           <NavLink
-            className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
+            className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg [&.active]:bg-indigo-600 [&.active]:underline"
             to="/register"
           >
             Registro
@@ -70,7 +70,7 @@ function Menu(props: MenuProps) {
           </NavLink>
           <button
             onClick={handleLogout}
-            className="text-white bg-red-600 hover:bg-red-800 px-4 py-2 rounded-lg"
+            className="text-white bg-rose-500 hover:bg-rose-600 px-4 py-2 rounded-lg"
           >
             Logout
           </button>

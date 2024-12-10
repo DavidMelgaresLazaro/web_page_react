@@ -1,7 +1,7 @@
 import { FaBars } from "react-icons/fa";
 
 import Logo from "./Logo";
-import UserGreet from "./UserGreet";
+
 import Menu from "./Menu";
 import Sidebar from "./Sidebar";
 
@@ -27,11 +27,6 @@ function Header() {
           <button onClick={toggleSidebar} className="sm:hidden">
             <FaBars size={30} />
           </button>
-
-          <UserGreet
-            name="David"
-            image="https://randomuser.me/api/portraits/men/8.jpg"
-          />
         </div>
       </div>
     </header>
