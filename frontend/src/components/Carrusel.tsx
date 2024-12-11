@@ -34,11 +34,13 @@ const Carrusel: React.FC<CarruselProps> = ({
           <div key={idx} className="flex-shrink-0 w-1/4 p-2">
             {" "}
             {/* Añadido padding entre las imágenes */}
-            <div className="relative w-full h-64">
+            <div className="relative w-full h-[200px]">
+              {""}
+
               <img
                 src={imagen}
                 alt={`Imagen ${idx + 1}`}
-                className="w-full h-full object-cover rounded-lg shadow-lg" // Asegura el tamaño y añade sombra para mejorar el diseño
+                className="w-full h-[150px] object-cover rounded-lg shadow-lg" // Modifica las clases para cambiar tamaño
               />
             </div>
           </div>
