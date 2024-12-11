@@ -15,7 +15,7 @@ async function getAllUsers(req: Request, res: Response) {
     const allUsers = await db
       .select()
       .from(users)
-      .where(eq(users.isDeleted, false));
+      .where(eq(users.isDeleted, 0));
 
     res.status(200).send(allUsers);
   } catch (error) {
@@ -92,7 +92,7 @@ async function getOneUser(req: Request, res: Response) {
   const [user] = await db
     .select()
     .from(users)
-    .where(and(eq(users.id, id), eq(users.isDeleted, false)));
+    .where(and(eq(users.id, id), eq(users.isDeleted, 0)));
 
   if (!user) {
     throw new HttpError(404, `User with ID ${id} not found`);
@@ -132,6 +132,8 @@ async function login(req: Request, res: Response) {
   const userToSend = {
     id: user.id,
     name: user.name,
+    email: user.email,
+    address: user.address,
   };
   const token = jwt.sign(userToSend, process.env.TOKEN_SECRET!, {
     expiresIn: "1d",

@@ -14,6 +14,7 @@ const AddUserSchema = z.object({
     .min(1, "Email required")
     .max(150, "Max 150 characters"),
   password: z.string().min(1, "Password required").max(16, "Max 16 characters"),
+  address: z.string().min(1, "Address required").max(100, "Max 100 characters"),
 });
 
 //* Defining a schema for login, which only requires the email and password fields
