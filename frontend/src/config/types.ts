@@ -10,4 +10,14 @@ type User = {
   updatedAt?: Date;
   deletedAt?: Date;
 };
-export type { User };
+type Img = {
+  name: string;
+  id?: number;
+  publicId: string;
+  url: string;
+  price: number;
+  productId: number;
+  createdAt?: Date;
+};
+
+export type { User, Img };

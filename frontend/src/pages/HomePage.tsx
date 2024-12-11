@@ -21,30 +21,11 @@ function HomePage() {
     BO6_image, // Imagen 9
   ];
 
-  const [products, setProducts] = useState<Img[]>([]);
-
-  // Ejecutar la función de obtener imágenes dentro de useEffect para que solo se ejecute una vez.
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const images = await getAllImg();
-        setProducts(images); // Actualizar el estado con todas las imágenes
-      } catch (error) {
-        console.error("Error al obtener las imágenes:", error);
-      }
-    };
-
-    fetchImage(); // Llamar a la función para obtener las imágenes al montar el componente.
-  }, []);
-
   return (
     <div className="space-y-20">
       <DivBuyNow />
       {/* Pasa las imágenes y el número de imágenes por desplazamiento */}
-      <Carrusel
-        imagenes={products.map((product) => product.url)}
-        itemsPorDesplazamiento={4}
-      />
+      <Carrusel imagenes={imagenes} itemsPorDesplazamiento={4} />
       <JuegosNuevos />
     </div>
   );

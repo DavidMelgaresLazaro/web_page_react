@@ -26,17 +26,26 @@ function Menu(props: MenuProps) {
       >
         Home
       </NavLink>
+
+      <NavLink
+        className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
+        to="/catalogo"
+      >
+        Catalogo
+      </NavLink>
+
       <NavLink
         className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
         to="/about"
       >
         Sobre nosotros
       </NavLink>
+
       <NavLink
         className="[&.active]:bg-indigo-600 [&.active]:text-white [&.active]:underline [&.active]:rounded-lg [&.active]:px-2 [&.active]:py-1"
-        to="/contact"
+        to="/top"
       >
-        Top 5
+        Top 8
       </NavLink>
 
       {!user ? (
