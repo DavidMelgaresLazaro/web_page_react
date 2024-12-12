@@ -12,7 +12,7 @@ type User = {
 };
 type Img = {
   name: string;
-  id?: number;
+  id: number;
   publicId: string;
   url: string;
   price: number;
@@ -20,4 +20,10 @@ type Img = {
   createdAt?: Date;
 };
 
-export type { User, Img };
+type ProductoInCart = Img & {
+  cantidad: number;
+};
+
+type Carrito = ProductoInCart[];
+
+export type { User, Img, Carrito, ProductoInCart };

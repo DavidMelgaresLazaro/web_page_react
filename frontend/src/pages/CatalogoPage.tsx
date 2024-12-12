@@ -27,12 +27,7 @@ function TodosLosJuegos() {
       {/* Mostrar los productos en un contenedor de cuadrícula */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <Product
-            key={product.id}
-            name={product.name}
-            price={product.price}
-            imageUrl={product.url}
-          />
+          <Product key={product.id} product={product} />
         ))}
       </div>
     </div>

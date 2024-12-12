@@ -18,7 +18,7 @@ function JuegosNuevos() {
           const idB = b.id || 0; // Lo mismo para 'b.id'
           return idB - idA; // Ordenar en orden descendente
         });
-        setProducts(sortedById.slice(0, 5)); // Actualizar el estado con las 3 imágenes más recientes
+        setProducts(sortedById.slice(0, 7)); // Actualizar el estado con las 3 imágenes más recientes
       } catch (error) {
         console.error("Error al obtener las imágenes:", error);
       }
@@ -32,12 +32,7 @@ function JuegosNuevos() {
       <h1 className="text-center text-2xl font-bold mb-4">Juegos Nuevos</h1>
       <div className="product-list flex space-x-4">
         {products.map((product) => (
-          <Product
-            key={product.id} // Asegúrate de que cada producto tenga un identificador único
-            name={product.name}
-            price={product.price}
-            imageUrl={product.url}
-          />
+          <Product key={product.id} product={product} />
         ))}
       </div>
     </div>

@@ -1,12 +1,10 @@
 import { useState } from "react";
 
-
 // This is a registration form component that handles user input, validation, and submission for a registration process.
 // Features include:
 // - Real-time validation for name, email, password, country, and platform fields.
 // - Error messages displayed when fields are invalid and have been touched.
 // - A dynamic "Register" button that is disabled unless the form is valid.
-
 
 export default function RegisterForm() {
   const [formValues, setFormValues] = useState({
@@ -78,94 +76,51 @@ export default function RegisterForm() {
   }
 
   return (
-    <form className="text-center">
-      <h2>Registro</h2>
+    <form className="bg-white p-8 rounded-lg shadow-md w-96 border-2 border-zinc-400 text-center">
+      <h2 className="text-2xl font-bold text-yellow-400 mb-6">Registro</h2>
 
-      
-      <div className="relative mb-8">
-        <input
-          className="input"
-          name="name"
-          type="text"
-          placeholder="Nombre..."
-          onChange={handleFormChange}
-          onBlur={() => setTouchedForm({ ...touchedForm, name: true })}
-        />
-        {errors.name && touchedForm.name && (
-          <span className="absolute text-red-300 text-sm">{errors.name}</span>
-        )}
-      </div>
+      {["name", "email", "password", "country"].map((field, index) => (
+        <div key={index} className="relative mb-8">
+          <input
+            className="input w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
+            name={field}
+            type={field === "password" ? "password" : "text"}
+            placeholder={`${field.charAt(0).toUpperCase() + field.slice(1)}...`}
+            onChange={handleFormChange}
+            onBlur={() => setTouchedForm({ ...touchedForm, [field]: true })}
+          />
+          {errors[field] && touchedForm[field] && (
+            <span className="absolute text-red-500 text-sm mt-1">
+              {errors[field]}
+            </span>
+          )}
+        </div>
+      ))}
 
-      
-      <div className="relative mb-8">
-        <input
-          className="input"
-          name="email"
-          type="email"
-          placeholder="Email..."
-          onChange={handleFormChange}
-          onBlur={() => setTouchedForm({ ...touchedForm, email: true })}
-        />
-        {errors.email && touchedForm.email && (
-          <span className="absolute text-red-300 text-sm">{errors.email}</span>
-        )}
-      </div>
-
-      
-      <div className="relative mb-8">
-        <input
-          className="input"
-          name="password"
-          type="password"
-          placeholder="Contraseña..."
-          onChange={handleFormChange}
-          onBlur={() => setTouchedForm({ ...touchedForm, password: true })}
-        />
-        {errors.password && touchedForm.password && (
-          <span className="absolute text-red-300 text-sm">
-            {errors.password}
-          </span>
-        )}
-      </div>
-
-      
-      <div className="relative mb-8">
-        <input
-          className="input"
-          name="country"
-          type="text"
-          placeholder="País..."
-          onChange={handleFormChange}
-          onBlur={() => setTouchedForm({ ...touchedForm, country: true })}
-        />
-        {errors.country && touchedForm.country && (
-          <span className="absolute text-red-300 text-sm">{errors.country}</span>
-        )}
-      </div>
-
-      
       <div className="relative mb-8">
         <select
-          className="input"
+          className="input w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
           name="platform"
-          value={formValues.platform}
           onChange={handleFormChange}
           onBlur={() => setTouchedForm({ ...touchedForm, platform: true })}
         >
           <option value="">Selecciona una plataforma...</option>
-          <option value="Xbox">Xbox</option>
-          <option value="PS5">PS5</option>
-          <option value="PC">PC</option>
-          <option value="Nintendo Switch">Nintendo Switch</option>
+          {["Xbox", "PS5", "PC", "Nintendo Switch"].map((platform) => (
+            <option key={platform} value={platform}>
+              {platform}
+            </option>
+          ))}
         </select>
         {errors.platform && touchedForm.platform && (
-          <span className="absolute text-red-300 text-sm">{errors.platform}</span>
+          <span className="absolute text-red-500 text-sm mt-1">
+            {errors.platform}
+          </span>
         )}
       </div>
 
       <button
         disabled={!isValidForm}
-        className="disabled:opacity-50 disabled:cursor-not-allowed bg-indigo-600 px-4 py-2"
+        className="disabled:opacity-50 disabled:cursor-not-allowed bg-yellow-400 text-white px-4 py-2 rounded-lg"
       >
         Registrar
       </button>
