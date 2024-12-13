@@ -10,8 +10,16 @@ import HttpError from "./models/HttpError";
 import { login, registerUser } from "./controllers/userController";
 import { products } from "./config/db/schema";
 import products_routes from "./routers/products.routes";
+import { registerOrder } from "./controllers/orderController";
+import orderRouter from "./routers/order.routes";
+import paymentRoutes from "./routers/payment.routes";
+import Stripe from "stripe";
 
 const app = express();
+
+const stripe = new Stripe(
+  "sk_test_51QVHL5At8Uymh8lQ0DcMADutSkoH0gn0zz9vK2XUKNmWXzIsyNuXQvOB1XLOXtwAJ2RiND8vPZLk9EZvUzEKQE4X00EvpQnZTw"
+);
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -31,6 +39,22 @@ app.use("/products", products_routes);
 app.post("/register", registerUser);
 
 app.post("/login", login);
+
+app.post("/verify-payment", async (req, res) => {
+  const { amount } = req.body;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: "usd",
+    });
+
+    res.json({ clientSecret: paymentIntent.client_secret });
+  } catch (error) {
+    console.error("Error creando el PaymentIntent:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+});
 
 app.use((req, res, next) => {
   next(new HttpError(404, "Invalid route"));

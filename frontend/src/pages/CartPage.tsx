@@ -1,4 +1,10 @@
+import { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartProvider";
+import {
+  useElements,
+  useStripe,
+  PaymentElement,
+} from "@stripe/react-stripe-js";
 
 const CartPage = () => {
   const {
@@ -9,12 +15,80 @@ const CartPage = () => {
     limpiarCarrito,
   } = useCart();
 
-  // Calcular el subtotal dinámicamente
+  const stripe = useStripe(); // Mueve los hooks aquí, dentro del componente
+  const elements = useElements(); // Mueve los hooks aquí, dentro del componente
+
+  const [clientSecret, setClientSecret] = useState("");
+  const [loading, setLoading] = useState(false); // Agrega un estado para manejar la carga
+
+  // Función para calcular el total del carrito
   const calcularTotal = () =>
     cart.reduce(
       (total, producto) => total + producto.price * producto.cantidad,
       0
     );
+
+  // Obtener clientSecret desde el backend
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/create-payment",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount: calcularTotal() * 100 }), // Monto en centavos
+          }
+        );
+        const { clientSecret } = await response.json();
+        setClientSecret(clientSecret); // Guardamos clientSecret en el estado
+      } catch (error) {
+        console.error("Error obteniendo clientSecret:", error);
+        alert("Hubo un problema al obtener el cliente secreto.");
+      }
+    };
+
+    if (cart.length > 0) {
+      fetchClientSecret();
+    }
+  }, [cart, calcularTotal]);
+
+  // Manejo del checkout
+  const handleCheckout = async () => {
+    if (!stripe || !elements) {
+      // Si Stripe o los elementos no están listos, no hacer nada
+      return;
+    }
+
+    setLoading(true); // Establece loading a true mientras se procesa el pago
+
+    // Primero, llamamos a elements.submit() antes de stripe.confirmPayment()
+    const submitResult = await elements.submit(); // Esta es la llamada que debe ir antes
+
+    if (submitResult.error) {
+      console.error("Error en submit:", submitResult.error.message);
+      setLoading(false); // Detén el estado de carga en caso de error
+      return;
+    }
+
+    // Luego, confirmamos el pago
+    const { error, paymentIntent } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: "http://localhost:5173/verify-payment", // Ajusta el URL de retorno según tu lógica
+      },
+    });
+
+    setLoading(false); // Detén el estado de carga
+
+    if (error) {
+      console.error("Error en confirmPayment:", error.message);
+      return;
+    }
+
+    // Si el pago es exitoso
+    console.log("Pago exitoso:", paymentIntent);
+  };
 
   return (
     <div className="flex flex-col lg:flex-row lg:space-x-6 px-4 lg:px-16 py-8">
@@ -29,13 +103,11 @@ const CartPage = () => {
               key={producto.id}
               className="flex items-center justify-between border-b pb-4 mb-4"
             >
-              {/* Imagen del producto */}
               <img
                 src={producto.url}
                 alt={producto.name}
                 className="w-24 h-24 object-cover rounded-md"
               />
-              {/* Detalles del producto */}
               <div className="flex-grow ml-4">
                 <h2 className="text-lg font-semibold">{producto.name}</h2>
                 <p className="text-gray-600">
@@ -63,7 +135,6 @@ const CartPage = () => {
                   />
                 </div>
               </div>
-              {/* Botón de eliminar */}
               <button
                 className="text-red-600 hover:underline"
                 onClick={() => eliminarProducto(producto.id)}
@@ -87,11 +158,18 @@ const CartPage = () => {
             <span>Subtotal:</span>
             <span>${calcularTotal().toFixed(2)}</span>
           </div>
+
+          {/* PaymentElement */}
+          <div className="mt-4">
+            <PaymentElement />
+          </div>
+
           <button
             className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-md mt-4"
-            onClick={() => alert("Procediendo al pago...")}
+            onClick={handleCheckout}
+            disabled={loading} // Deshabilita el botón mientras se está procesando
           >
-            Proceder al Pago
+            {loading ? "Procesando..." : "Proceder al Pago"}
           </button>
           <button
             className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 rounded-md mt-2"

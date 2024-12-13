@@ -6,6 +6,7 @@ import CartPage from "../pages/CartPage";
 import ProfilePage from "../pages/ProfilePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import PaymentSuccess from "../pages/PaymentSuccess";
 
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -29,7 +30,7 @@ export default function AppRoutes() {
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
         <Route path="/cesta" element={<CartPage />} />
-
+        <Route path="/verify-payment" element={<PaymentSuccess />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>
