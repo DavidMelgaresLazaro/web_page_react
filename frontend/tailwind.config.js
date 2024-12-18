@@ -11,7 +11,5 @@ export default {
       },
     },
   },
-  plugins: [
-    typography, // Usamos el import aquí
-  ],
+  plugins: [typography],
 };
