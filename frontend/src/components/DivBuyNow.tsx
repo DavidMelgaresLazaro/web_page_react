@@ -8,7 +8,7 @@ const shuffleArray = (array: Img[]) => {
 };
 
 function DivBuyNow() {
-  const [products, setProducts] = useState<Img[]>([]);
+  const [setProducts] = useState<Img[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Img | null>(null);
 
   // Ejecutar la función para obtener imágenes dentro de useEffect para que solo se ejecute una vez

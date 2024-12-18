@@ -1,13 +1,10 @@
 import { useState } from "react";
 
-// This is a registration form component that handles user input, validation, and submission for a registration process.
-// Features include:
-// - Real-time validation for name, email, password, country, and platform fields.
-// - Error messages displayed when fields are invalid and have been touched.
-// - A dynamic "Register" button that is disabled unless the form is valid.
+// Define un tipo para las claves del formulario
+type FormField = "name" | "email" | "password" | "country" | "platform";
 
 export default function RegisterForm() {
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<Record<FormField, string>>({
     name: "",
     email: "",
     password: "",
@@ -15,7 +12,7 @@ export default function RegisterForm() {
     platform: "",
   });
 
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<Record<FormField, string>>({
     name: "",
     email: "",
     password: "",
@@ -23,7 +20,7 @@ export default function RegisterForm() {
     platform: "",
   });
 
-  const [touchedForm, setTouchedForm] = useState({
+  const [touchedForm, setTouchedForm] = useState<Record<FormField, boolean>>({
     name: false,
     email: false,
     password: false,
@@ -43,7 +40,9 @@ export default function RegisterForm() {
     !errors.country &&
     !errors.platform;
 
-  function validateForm(event) {
+  function validateForm(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
     const { name, value } = event.target;
     let error = "";
 
@@ -64,8 +63,10 @@ export default function RegisterForm() {
     setErrors({ ...errors, [name]: error });
   }
 
-  function handleFormChange(event) {
-    const { name, value } = event.target;
+  function handleFormChange(
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) {
+    const { name, value } = event.target as { name: FormField; value: string };
 
     setFormValues({
       ...formValues,
@@ -79,8 +80,8 @@ export default function RegisterForm() {
     <form className="bg-white p-8 rounded-lg shadow-md w-96 border-2 border-zinc-400 text-center">
       <h2 className="text-2xl font-bold text-yellow-400 mb-6">Registro</h2>
 
-      {["name", "email", "password", "country"].map((field, index) => (
-        <div key={index} className="relative mb-8">
+      {["name", "email", "password", "country"].map((field) => (
+        <div key={field} className="relative mb-8">
           <input
             className="input w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-400"
             name={field}
@@ -89,9 +90,9 @@ export default function RegisterForm() {
             onChange={handleFormChange}
             onBlur={() => setTouchedForm({ ...touchedForm, [field]: true })}
           />
-          {errors[field] && touchedForm[field] && (
+          {errors[field as FormField] && touchedForm[field as FormField] && (
             <span className="absolute text-red-500 text-sm mt-1">
-              {errors[field]}
+              {errors[field as FormField]}
             </span>
           )}
         </div>
