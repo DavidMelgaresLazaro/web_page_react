@@ -1,11 +1,10 @@
-import logo from '../images/logo.png'; 
+import logo from "../images/Logo.png";
 
 //Logo of the app
 function Logo() {
   return (
     <div>
-      
-      <img src={logo} alt="Logo"className="w-20 h-auto"  />
+      <img src={logo} alt="Logo" className="w-20 h-auto" />
     </div>
   );
 }
