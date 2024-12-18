@@ -22,7 +22,8 @@ export default function LoginForm() {
     !errors.email &&
     !errors.password;
 
-  function validateForm(event) {
+  // Validación del formulario con el tipo de evento especificado
+  function validateForm(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
     let error = "";
 
@@ -36,7 +37,8 @@ export default function LoginForm() {
     setErrors({ ...errors, [name]: error });
   }
 
-  function handleFormChange(event) {
+  // Manejo del cambio en los campos con el tipo de evento especificado
+  function handleFormChange(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
 
     setFormValues({
