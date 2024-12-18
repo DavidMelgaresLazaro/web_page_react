@@ -36,7 +36,7 @@ const CartPage = () => {
     const fetchClientSecret = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/payments/payment-intent",
+          "https://web-page-react.onrender.com/payments/payment-intent",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

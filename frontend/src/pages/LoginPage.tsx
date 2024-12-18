@@ -20,14 +20,17 @@ export default function LoginPage() {
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {
-      const response = await fetch("http://localhost:3000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+      const response = await fetch(
+        "https://web-page-react.onrender.com/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
 
       const result = await response.json();
 

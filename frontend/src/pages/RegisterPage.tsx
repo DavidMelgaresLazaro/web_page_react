@@ -25,14 +25,17 @@ export default function RegisterPage() {
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {
       // Primero intentamos registrar al usuario
-      const registerResponse = await fetch("http://localhost:3000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-        credentials: "include",
-      });
+      const registerResponse = await fetch(
+        "https://web-page-react.onrender.com/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+          credentials: "include",
+        }
+      );
 
       if (!registerResponse.ok) {
         const error = await registerResponse.json();
