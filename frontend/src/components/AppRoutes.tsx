@@ -6,11 +6,11 @@ import CartPage from "../pages/CartPage";
 import ProfilePage from "../pages/ProfilePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
-import PaymentSuccess from "../pages/PaymentSuccess";
 
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import CatalogoPage from "../pages/CatalogoPage";
+import PaymentSuccess from "../pages/PaymentSuccess";
 
 export default function AppRoutes() {
   return (
@@ -26,11 +26,11 @@ export default function AppRoutes() {
       <Route path="/about" element={<AboutPage />} />
       <Route path="/top" element={<TopGamesPage />} />
       <Route path="/catalogo" element={<CatalogoPage />} />
+      <Route path="/payment-success" element={<PaymentSuccess />} />
 
       {/* Rutas privadas */}
       <Route element={<PrivateRoute />}>
         <Route path="/cesta" element={<CartPage />} />
-        <Route path="/verify-payment" element={<PaymentSuccess />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Route>
     </Routes>

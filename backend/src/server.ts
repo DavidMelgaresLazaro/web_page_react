@@ -12,7 +12,7 @@ import { products } from "./config/db/schema";
 import products_routes from "./routers/products.routes";
 import { registerOrder } from "./controllers/orderController";
 import orderRouter from "./routers/order.routes";
-import paymentRoutes from "./routers/payment.routes";
+import routerPayment from "./routers/payment.routes";
 import Stripe from "stripe";
 
 const app = express();
@@ -36,25 +36,14 @@ app.use("/users", userRouter);
 
 app.use("/products", products_routes);
 
+app.use("/orders", orderRouter);
+// app.use("/payments", paymentRoutes);
+
+app.use("/payments", routerPayment);
+
 app.post("/register", registerUser);
 
 app.post("/login", login);
-
-app.post("/verify-payment", async (req, res) => {
-  const { amount } = req.body;
-
-  try {
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount,
-      currency: "usd",
-    });
-
-    res.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error) {
-    console.error("Error creando el PaymentIntent:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-});
 
 app.use((req, res, next) => {
   next(new HttpError(404, "Invalid route"));

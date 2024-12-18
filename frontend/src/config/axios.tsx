@@ -1,9 +1,9 @@
 import axios from "axios";
 
-import { Img, User } from "../config/types";
+import { Img, User, UserForm } from "../config/types";
 
 const instanceAxios = axios.create({
-  baseURL: "http://localhost:4321",
+  baseURL: "http://localhost:3000",
   timeout: 50000,
 });
 
@@ -39,3 +39,19 @@ export const getAllImg = async () => {
     return []; // En caso de error, retorna un arreglo vacío
   }
 };
+
+export const postCompra = async (data: UserForm) => {
+  try {
+    const response = await instanceAxios.post("/orders", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+export { instanceAxios };

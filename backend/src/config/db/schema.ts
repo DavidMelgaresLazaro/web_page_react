@@ -148,7 +148,9 @@ export const orderItems = sqliteTable(
   {
     id: integer().primaryKey({ autoIncrement: true }),
     orderId: integer("order_id").references(() => orders.id),
-    productId: integer("product_id").references(() => products.id),
+    productId: integer("product_id").references(() => products.id, {
+      onDelete: "cascade",
+    }),
     quantity: integer().notNull(),
     unitPrice: integer("unit_price").notNull(),
   },

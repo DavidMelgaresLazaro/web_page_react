@@ -26,4 +26,6 @@ type ProductoInCart = Img & {
 
 type Carrito = ProductoInCart[];
 
-export type { User, Img, Carrito, ProductoInCart };
+type UserForm = Pick<User, "name" | "email" | "password">;
+
+export type { User, Img, Carrito, ProductoInCart, UserForm };

@@ -1,52 +1,57 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { instanceAxios } from "../config/axios";
+import { useCart } from "../contexts/CartProvider";
+import useUserContext from "../hooks/useUserContext";
 
-const PaymentSuccess = () => {
-  const navigate = useNavigate();
+function PaymentSuccess() {
+  const [orderId, setOrderId] = useState<number | null>(null);
+  const { cart, limpiarCarrito } = useCart();
+  const { user } = useUserContext();
+
+  const totalAmount = cart.reduce(
+    (total, producto) => total + producto.price * producto.cantidad,
+    0
+  );
+
+  const createOrder = async () => {
+    try {
+      // Realiza la solicitud POST para crear el pedido
+      const response = await instanceAxios.post("/orders", {
+        userId: user?.id,
+        products: cart,
+        total: totalAmount,
+      });
+
+      setOrderId(response.data.orderId);
+
+      // Limpia el carrito en el almacenamiento local
+      localStorage.setItem("cart", JSON.stringify([]));
+      limpiarCarrito(); // Guarda un array vacío o null, si deseas borrar el carrito
+    } catch (error) {
+      console.error("Error al realizar la compra:", error);
+      // alert("Hubo un problema al realizar la compra. Intenta nuevamente.");
+    }
+  };
 
   useEffect(() => {
-    // Simula una llamada al backend para procesar el pago
-    const processPayment = async () => {
-      try {
-        const response = await fetch(
-          "http://localhost:3000/api/payments/verify-payment",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              paymentIntentId: "pi_example", // Obtén esto del frontend después de confirmar el pago
-              paymentIntentClientSecret: "pi_example_secret", // Obtén el secret del cliente
-              redirectStatus: "succeeded", // Asegúrate de que este estado provenga del pago
-            }),
-          }
-        );
-
-        const data = await response.json();
-
-        if (data.success) {
-          // Muestra el mensaje de éxito
-          alert(data.message);
-          // Redirige a la página de inicio
-          navigate("/"); // Cambia '/' por la ruta de tu home si es diferente
-        } else {
-          // Si el pago no fue exitoso
-          alert("Hubo un error con el pago.");
-        }
-      } catch (error) {
-        console.error("Error al procesar el pago:", error);
-      }
-    };
-
-    processPayment();
-  }, [navigate]);
+    createOrder();
+  }, []);
 
   return (
-    <div>
-      <h2>Procesando pago...</h2>
-    </div>
+    <>
+      <div className="container pl-24 pt-5 ">
+        <h1 className="text-3xl font-bold">Pago exitoso 👏</h1>
+        {orderId ? (
+          <p>
+            Tu compra ha sido realizada con exito. Tu número de pedido es:{" "}
+            {orderId}
+          </p>
+        ) : (
+          <p>Obteniendo número de pedido...</p>
+        )}
+      </div>
+    </>
   );
-};
+}
 
 export default PaymentSuccess;

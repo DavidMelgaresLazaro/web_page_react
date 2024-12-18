@@ -1,98 +1,62 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useCart } from "../contexts/CartProvider";
-import {
-  useElements,
-  useStripe,
-  PaymentElement,
-} from "@stripe/react-stripe-js";
+
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckoutForm from "../components/CheckoutForm";
+
+// Cargar la clave pública de Stripe
+const stripePromise = loadStripe(
+  "pk_test_51QVHL5At8Uymh8lQPEtWAm4yaeyUKnSrgxj8IwQxSJtpLg8kYf7B5JcFA9ezT0krnsZPQf0Mik1B94FWyGNxOQU100KWSV0RaB"
+);
 
 const CartPage = () => {
-  const {
-    cart,
-    cantidadTotal,
-    eliminarProducto,
-    actualizarCantidad,
-    limpiarCarrito,
-  } = useCart();
+  const { cart, cantidadTotal, eliminarProducto, actualizarCantidad } =
+    useCart();
 
-  const stripe = useStripe(); // Mueve los hooks aquí, dentro del componente
-  const elements = useElements(); // Mueve los hooks aquí, dentro del componente
-
+  const [total, setTotal] = useState(0);
   const [clientSecret, setClientSecret] = useState("");
-  const [loading, setLoading] = useState(false); // Agrega un estado para manejar la carga
 
-  // Función para calcular el total del carrito
-  const calcularTotal = () =>
-    cart.reduce(
-      (total, producto) => total + producto.price * producto.cantidad,
-      0
-    );
+  // Calcular el total del carrito
+  const calcularTotal = useCallback(
+    () =>
+      cart.reduce(
+        (total, producto) => total + producto.price * producto.cantidad,
+        0
+      ),
+    [cart]
+  );
 
-  // Obtener clientSecret desde el backend
   useEffect(() => {
+    setTotal(calcularTotal());
+  }, [cart, calcularTotal]);
+
+  useEffect(() => {
+    // Obtener el clientSecret desde el backend
     const fetchClientSecret = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/create-payment",
+          "http://localhost:3000/payments/payment-intent",
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ amount: calcularTotal() * 100 }), // Monto en centavos
+            body: JSON.stringify({ amount: total * 100 }), // Enviar el total convertido a centavos
           }
         );
-        const { clientSecret } = await response.json();
-        setClientSecret(clientSecret); // Guardamos clientSecret en el estado
+        const data = await response.json();
+        setClientSecret(data.clientSecret);
       } catch (error) {
-        console.error("Error obteniendo clientSecret:", error);
-        alert("Hubo un problema al obtener el cliente secreto.");
+        console.error("Error al obtener el clientSecret", error);
       }
     };
 
-    if (cart.length > 0) {
+    if (total > 0) {
       fetchClientSecret();
     }
-  }, [cart, calcularTotal]);
-
-  // Manejo del checkout
-  const handleCheckout = async () => {
-    if (!stripe || !elements) {
-      // Si Stripe o los elementos no están listos, no hacer nada
-      return;
-    }
-
-    setLoading(true); // Establece loading a true mientras se procesa el pago
-
-    // Primero, llamamos a elements.submit() antes de stripe.confirmPayment()
-    const submitResult = await elements.submit(); // Esta es la llamada que debe ir antes
-
-    if (submitResult.error) {
-      console.error("Error en submit:", submitResult.error.message);
-      setLoading(false); // Detén el estado de carga en caso de error
-      return;
-    }
-
-    // Luego, confirmamos el pago
-    const { error, paymentIntent } = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: "http://localhost:5173/verify-payment", // Ajusta el URL de retorno según tu lógica
-      },
-    });
-
-    setLoading(false); // Detén el estado de carga
-
-    if (error) {
-      console.error("Error en confirmPayment:", error.message);
-      return;
-    }
-
-    // Si el pago es exitoso
-    console.log("Pago exitoso:", paymentIntent);
-  };
+  }, [total]);
 
   return (
     <div className="flex flex-col lg:flex-row lg:space-x-6 px-4 lg:px-16 py-8">
-      {/* Lista de productos */}
       <div className="flex-grow bg-white shadow-md p-6 rounded-md">
         <h1 className="text-2xl font-bold mb-4">Carrito de Compras</h1>
         {cart.length === 0 ? (
@@ -111,10 +75,7 @@ const CartPage = () => {
               <div className="flex-grow ml-4">
                 <h2 className="text-lg font-semibold">{producto.name}</h2>
                 <p className="text-gray-600">
-                  Precio: $
-                  {producto.price && !isNaN(producto.price)
-                    ? producto.price.toFixed(2)
-                    : "0.00"}
+                  Precio: ${producto.price.toFixed(2)}
                 </p>
                 <p className="text-gray-800 font-bold">
                   Subtotal: ${(producto.price * producto.cantidad).toFixed(2)}
@@ -126,12 +87,14 @@ const CartPage = () => {
                     value={producto.cantidad}
                     min="1"
                     className="w-16 border border-gray-300 rounded-md px-2 py-1"
-                    onChange={(e) =>
-                      actualizarCantidad(
-                        producto.id,
-                        parseInt(e.target.value, 10)
-                      )
-                    }
+                    onChange={(e) => {
+                      const cantidad = parseInt(e.target.value, 10);
+                      if (isNaN(cantidad) || cantidad <= 0) {
+                        alert("Ingrese una cantidad válida.");
+                        return;
+                      }
+                      actualizarCantidad(producto.id, cantidad);
+                    }}
                   />
                 </div>
               </div>
@@ -146,7 +109,6 @@ const CartPage = () => {
         )}
       </div>
 
-      {/* Resumen del pedido */}
       {cart.length > 0 && (
         <div className="w-full lg:w-1/3 bg-white shadow-md p-6 rounded-md mt-6 lg:mt-0">
           <h2 className="text-xl font-bold mb-4">Resumen del Pedido</h2>
@@ -156,27 +118,17 @@ const CartPage = () => {
           </div>
           <div className="flex justify-between text-gray-700 my-2">
             <span>Subtotal:</span>
-            <span>${calcularTotal().toFixed(2)}</span>
+            <span>${total.toFixed(2)}</span>
           </div>
-
-          {/* PaymentElement */}
           <div className="mt-4">
-            <PaymentElement />
+            {clientSecret ? (
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm />
+              </Elements>
+            ) : (
+              <p className="text-gray-500">Cargando opciones de pago...</p>
+            )}
           </div>
-
-          <button
-            className="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 rounded-md mt-4"
-            onClick={handleCheckout}
-            disabled={loading} // Deshabilita el botón mientras se está procesando
-          >
-            {loading ? "Procesando..." : "Proceder al Pago"}
-          </button>
-          <button
-            className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 rounded-md mt-2"
-            onClick={limpiarCarrito}
-          >
-            Limpiar Carrito
-          </button>
         </div>
       )}
     </div>

@@ -3,6 +3,6 @@ import express from "express";
 
 const orderRouter = express.Router();
 
-orderRouter.post("/register-order", registerOrder);
+orderRouter.post("/", registerOrder);
 
 export default orderRouter;

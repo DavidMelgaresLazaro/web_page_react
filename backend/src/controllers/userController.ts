@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { eq, and } from "drizzle-orm";
 import { db } from "../config/db/connection";
 import { users } from "../config/db/schema";
@@ -32,9 +32,8 @@ async function registerUser(req: Request, res: Response) {
   // Validación con Zod
   const { success, data: newUser, error } = AddUserSchema.safeParse(user);
   if (!success) {
-    return res
-      .status(400)
-      .send({ message: "Validation error", errors: error.errors });
+    res.status(400).send({ message: "Validation error", errors: error.errors });
+    return;
   }
 
   try {
@@ -44,7 +43,8 @@ async function registerUser(req: Request, res: Response) {
       .from(users)
       .where(eq(users.email, newUser.email));
     if (existingUser.length > 0) {
-      return res.status(409).send({ message: "El email ya está registrado." });
+      res.status(409).send({ message: "El email ya está registrado." });
+      return;
     }
 
     // Hash de la contraseña
