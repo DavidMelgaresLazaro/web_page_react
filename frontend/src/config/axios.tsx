@@ -3,7 +3,7 @@ import axios from "axios";
 import { Img, User, UserForm } from "../config/types";
 
 const instanceAxios = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://web-page-react.onrender.com",
   timeout: 50000,
 });
 
@@ -30,7 +30,7 @@ export const getOneImg = async () => {
 export const getAllImg = async () => {
   try {
     const response = await instanceAxios.get<Img[]>(
-      "http://localhost:3000/products"
+      "https://web-page-react.onrender.com/products"
     );
     console.log(response); // Verifica la respuesta de la API en la consola
     return response.data; // Retorna todas las imágenes (no solo la primera)
