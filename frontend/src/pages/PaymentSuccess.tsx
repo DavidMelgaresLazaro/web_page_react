@@ -15,6 +15,8 @@ function PaymentSuccess() {
 
   const createOrder = async () => {
     try {
+      console.log("Iniciando creación de pedido...");
+
       // Realiza la solicitud POST para crear el pedido
       const response = await instanceAxios.post("/orders", {
         userId: user?.id,
@@ -22,14 +24,20 @@ function PaymentSuccess() {
         total: totalAmount,
       });
 
-      setOrderId(response.data.orderId);
+      console.log("Respuesta de la API:", response); // Verifica la respuesta
 
-      // Limpia el carrito en el almacenamiento local
+      if (response.data?.orderId) {
+        setOrderId(response.data.orderId);
+        console.log("Pedido creado con éxito, ID:", response.data.orderId);
+      } else {
+        console.error("No se recibió un orderId de la API");
+      }
+
+      // Limpia el carrito
       localStorage.setItem("cart", JSON.stringify([]));
-      limpiarCarrito(); // Guarda un array vacío o null, si deseas borrar el carrito
+      limpiarCarrito(); // Limpia el carrito
     } catch (error) {
-      console.error("Error al realizar la compra:", error);
-      // alert("Hubo un problema al realizar la compra. Intenta nuevamente.");
+      console.error("Error al crear el pedido:", error);
     }
   };
 
