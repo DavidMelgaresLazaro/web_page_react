@@ -23,7 +23,8 @@ const CheckoutForm = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "https://web-page-react-iota.vercel.app/PaymentSuccess",
+        return_url:
+          "https://web-page-react-davids-projects-738bc112.vercel.app/payment-success", // URL para la confirmación del pago
       },
     });
 
