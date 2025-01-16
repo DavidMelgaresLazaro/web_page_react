@@ -28,7 +28,7 @@ app.use(
     origin: [
       // "http://localhost:5173",
       //"http://127.0.0.1:5173",
-      "https://web-page-react-iota.vercel.app",
+      "https://web-page-react-davids-projects-738bc112.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE"], // Allow desired HTTP methods
     allowedHeaders: ["Content-Type", "Authorization"], // Allow desired headers
